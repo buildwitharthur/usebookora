@@ -213,6 +213,17 @@
   --animate-shake: shake 320ms var(--ease-standard);
   --animate-pulse: pulse 1200ms var(--ease-standard) infinite;
   --animate-spin: spin 800ms var(--ease-linear) infinite;
+  --animate-caret: caret 1100ms steps(1) infinite;
+
+  @keyframes caret {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
 
   @keyframes fade-in {
     from {
