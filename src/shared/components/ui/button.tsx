@@ -15,6 +15,7 @@ export const buttonVariants = tv({
       sm: "h-control-sm px-3 text-sm",
       md: "h-control-md px-4 text-sm",
       lg: "h-control-lg px-6 text-md",
+      "icon-sm": "size-control-sm text-sm",
     },
   },
   defaultVariants: {
