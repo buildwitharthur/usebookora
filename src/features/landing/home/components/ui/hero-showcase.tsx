@@ -1,14 +1,9 @@
 "use client";
 
+import { CheckIcon, CopyIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
-import { CalendarCheckIcon } from "@/shared/components/ui/icons";
-
-type ShowcaseService = {
-  name: string;
-  duration: string;
-  price: string;
-};
+import { cn } from "@/shared/utils/cn";
 
 type ShowcaseAgendaItem = {
   time: string;
@@ -17,77 +12,56 @@ type ShowcaseAgendaItem = {
 };
 
 export type HeroShowcaseProps = {
-  business: {
-    name: string;
-    initials: string;
-    address: string;
-    url: string;
-  };
-  servicesTitle: string;
-  services: ShowcaseService[];
-  selectedService: number;
-  slotsTitle: string;
-  dayLabel: string;
-  /** Horários do dia; os que já estão na agenda aparecem como ocupados */
-  slots: string[];
-  selectedSlot: string;
-  confirmLabel: string;
-  confirmation: {
-    title: string;
-    description: string;
-  };
-  notification: {
-    title: string;
-    client: string;
-  };
   agenda: {
     title: string;
     liveLabel: string;
     items: ShowcaseAgendaItem[];
   };
+  booking: {
+    title: string;
+    dayLabel: string;
+    /** Horários do dia; os que já estão na agenda aparecem como ocupados */
+    times: string[];
+    selectedTime: string;
+    client: string;
+    service: string;
+    confirmLabel: string;
+    confirmedLabel: string;
+  };
+  usage: {
+    title: string;
+    planLabel: string;
+    count: number;
+    limit: number;
+  };
+  share: {
+    title: string;
+    url: string;
+    copyLabel: string;
+  };
 };
 
-/**
- * Etapas do loop: 0 lista de serviços → 1 serviço selecionado →
- * 2 lista de horários → 3 horário selecionado → 4 confirmado
- */
-const STEP_DURATIONS = [1800, 1100, 1500, 1400, 3600];
+/** Etapas do loop: 0 escolhendo horário → 1 horário selecionado → 2 confirmado */
+const STEP_DURATIONS = [1600, 1300, 3800];
 
-const serviceOption = tv({
-  slots: {
-    root: "flex items-center justify-between gap-3 rounded-lg border px-3 py-2.5 transition-colors duration-(--duration-slow)",
-    radio:
-      "flex size-4 shrink-0 items-center justify-center rounded-full border transition-colors duration-(--duration-slow)",
-  },
-  variants: {
-    selected: {
-      true: {
-        root: "border-brand bg-brand-subtle",
-        radio: "border-brand bg-brand",
-      },
-      false: {
-        root: "border-border bg-surface",
-        radio: "border-border-strong",
-      },
-    },
-  },
-});
+const card = "absolute w-64 animate-slide-up rounded-2xl p-4 surface-floating";
 
+const cardTitle = "text-sm font-semibold";
+
+/** Livre fica em relevo, ocupado fica rebaixado, selecionado acende na cor da marca */
 const slotChip = tv({
-  base: "rounded-md border py-1.5 text-center text-xs font-medium tabular",
+  base: "rounded-md py-1.5 text-center text-xs font-medium tabular",
   variants: {
     status: {
-      available: "border-border bg-slot-available text-fg",
-      unavailable:
-        "border-transparent bg-slot-unavailable text-fg-disabled line-through",
-      selected:
-        "animate-pop border-slot-selected bg-slot-selected text-brand-on",
+      available: "text-fg surface-raised emboss",
+      unavailable: "text-fg-disabled line-through surface-inset",
+      selected: "animate-pop text-brand-on surface-brand",
     },
   },
 });
 
 const agendaRow = tv({
-  base: "flex items-center gap-3 rounded-md px-2 py-2",
+  base: "flex items-center gap-3 rounded-md px-2 py-1.5",
   variants: {
     isNew: {
       true: "animate-slide-down bg-brand-subtle",
@@ -95,20 +69,7 @@ const agendaRow = tv({
   },
 });
 
-const HeroShowcase = ({
-  business,
-  servicesTitle,
-  services,
-  selectedService,
-  slotsTitle,
-  dayLabel,
-  slots,
-  selectedSlot,
-  confirmLabel,
-  confirmation,
-  notification,
-  agenda,
-}: HeroShowcaseProps) => {
+const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
@@ -119,20 +80,19 @@ const HeroShowcase = ({
     return () => clearTimeout(timeout);
   }, [step]);
 
-  const service = services[selectedService];
-  const screen = step < 2 ? "services" : step < 4 ? "slots" : "confirmed";
-  const isConfirmed = step === 4;
-  const summary = `${service.name} · ${dayLabel}, ${selectedSlot}`;
+  const isSelected = step >= 1;
+  const isConfirmed = step === 2;
   const bookedTimes = new Set(agenda.items.map((item) => item.time));
+  const usageCount = usage.count + (isConfirmed ? 1 : 0);
 
   const agendaItems = [
     ...agenda.items.map((item) => ({ ...item, isNew: false })),
     ...(isConfirmed
       ? [
           {
-            time: selectedSlot,
-            client: notification.client,
-            service: service.name,
+            time: booking.selectedTime,
+            client: booking.client,
+            service: booking.service,
             isNew: true,
           },
         ]
@@ -142,164 +102,18 @@ const HeroShowcase = ({
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto flex w-full max-w-md justify-center"
+      className="pointer-events-none absolute inset-0 hidden select-none xl:block"
     >
-      {/* Brilho atrás do celular */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[40rem] -translate-1/2 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--color-brand)_18%,transparent),transparent)]" />
-
-      {/* Notificação do novo agendamento */}
-      <div className="absolute top-24 left-0 z-10 hidden w-64 lg:block">
-        {isConfirmed && (
-          <div className="flex animate-pop gap-3 rounded-xl border border-border bg-surface p-4 shadow-lg">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success-bg text-success">
-              <CalendarCheckIcon className="size-icon-md" />
-            </span>
-            <div className="min-w-0">
-              <p className="text-sm font-semibold">{notification.title}</p>
-              <p className="truncate text-sm text-fg-secondary">
-                {notification.client}
-              </p>
-              <p className="mt-0.5 truncate text-xs text-fg-muted">{summary}</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Celular com a página pública */}
-      <div className="relative w-74 shrink-0 rounded-[2.75rem] border border-border-strong bg-surface p-2.5 shadow-lg">
-        <div className="flex h-[35rem] flex-col overflow-hidden rounded-[2.25rem] border border-border bg-canvas">
-          <div className="bg-surface px-4 pt-2.5 pb-2">
-            <div className="mx-auto h-5 w-24 rounded-full bg-inverse" />
-            <p className="mt-2.5 truncate rounded-full bg-subtle px-3 py-1 text-center text-xs text-fg-muted">
-              {business.url}
-            </p>
-          </div>
-
-          <div className="h-16 shrink-0 bg-brand bg-[radial-gradient(circle_at_80%_0%,color-mix(in_oklab,white_30%,transparent),transparent_60%)]" />
-
-          <div className="-mt-7 px-4">
-            <div className="flex size-avatar-md items-center justify-center rounded-full border-4 border-canvas bg-brand-subtle text-sm font-semibold text-brand">
-              {business.initials}
-            </div>
-            <p className="mt-2 font-semibold">{business.name}</p>
-            <p className="truncate text-xs text-fg-muted">{business.address}</p>
-          </div>
-
-          <div key={screen} className="flex flex-1 flex-col px-4 pt-5 pb-4">
-            {screen === "services" && (
-              <div className="animate-fade-in space-y-2">
-                <p className="text-xs font-semibold tracking-wide text-fg-muted uppercase">
-                  {servicesTitle}
-                </p>
-                {services.map((item, index) => {
-                  const styles = serviceOption({
-                    selected: step >= 1 && index === selectedService,
-                  });
-
-                  return (
-                    <div key={item.name} className={styles.root()}>
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium">
-                          {item.name}
-                        </p>
-                        <p className="text-xs text-fg-muted">{item.duration}</p>
-                      </div>
-                      <div className="flex items-center gap-2.5">
-                        <span className="text-sm font-medium tabular">
-                          {item.price}
-                        </span>
-                        <span className={styles.radio()}>
-                          {step >= 1 && index === selectedService && (
-                            <span className="size-1.5 animate-pop rounded-full bg-brand-on" />
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {screen === "slots" && (
-              <div className="flex flex-1 animate-slide-up flex-col">
-                <div className="flex items-center justify-between rounded-lg border border-brand bg-brand-subtle px-3 py-2 text-xs">
-                  <span className="font-medium">{service.name}</span>
-                  <span className="text-fg-muted">{service.duration}</span>
-                </div>
-
-                <p className="mt-4 text-xs font-semibold tracking-wide text-fg-muted uppercase">
-                  {slotsTitle} · {dayLabel}
-                </p>
-
-                <div className="mt-2 grid grid-cols-3 gap-2">
-                  {slots.map((time) => (
-                    <span
-                      key={time}
-                      className={slotChip({
-                        status:
-                          step === 3 && time === selectedSlot
-                            ? "selected"
-                            : bookedTimes.has(time)
-                              ? "unavailable"
-                              : "available",
-                      })}
-                    >
-                      {time}
-                    </span>
-                  ))}
-                </div>
-
-                {step === 3 && (
-                  <div className="mt-auto animate-slide-up rounded-md bg-brand py-2.5 text-center text-sm font-medium text-brand-on shadow-sm">
-                    {confirmLabel}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {screen === "confirmed" && (
-              <div className="flex flex-1 animate-fade-in flex-col items-center justify-center text-center">
-                <span className="flex size-14 animate-pop items-center justify-center rounded-full bg-success-bg text-success">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="size-7"
-                  >
-                    <path
-                      d="M5 12l5 5L20 7"
-                      strokeDasharray={24}
-                      className="animate-check-draw"
-                    />
-                  </svg>
-                </span>
-                <p className="mt-4 font-semibold">{confirmation.title}</p>
-                <p className="mt-1 text-sm text-fg-secondary">{summary}</p>
-                <p className="mt-3 text-xs text-fg-muted">
-                  {confirmation.description}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="mx-auto mb-2 h-1 w-24 shrink-0 rounded-full bg-border-strong" />
-        </div>
-      </div>
-
-      {/* Agenda do dashboard */}
-      <div className="absolute top-52 right-0 z-10 hidden w-64 rounded-xl border border-border bg-surface p-4 shadow-lg lg:block">
+      {/* Esquerda, em cima: agenda do dashboard */}
+      <div className={cn(card, "top-16 -left-6")}>
         <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold">{agenda.title}</p>
+          <p className={cardTitle}>{agenda.title}</p>
           <span className="flex items-center gap-1.5 text-xs font-medium text-success-fg">
             <span className="size-1.5 animate-pulse rounded-full bg-success" />
             {agenda.liveLabel}
           </span>
         </div>
-
-        <ul className="mt-3 space-y-1">
+        <ul className="mt-3 space-y-0.5 border-t border-border pt-2">
           {agendaItems.map((item) => (
             <li key={item.time} className={agendaRow({ isNew: item.isNew })}>
               <span className="w-10 shrink-0 font-mono text-xs text-fg-muted tabular">
@@ -316,6 +130,94 @@ const HeroShowcase = ({
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Esquerda, embaixo: link da página */}
+      <div
+        className={cn(card, "top-96 left-10")}
+        style={{ animationDelay: "160ms" }}
+      >
+        <p className={cardTitle}>{share.title}</p>
+        <p className="mt-3 truncate rounded-md px-3 py-2 font-mono text-xs text-fg-secondary surface-inset">
+          {share.url}
+        </p>
+        <span className="mt-3 flex h-control-sm items-center justify-center gap-2 rounded-md text-sm font-medium text-fg surface-raised emboss">
+          <CopyIcon className="size-icon-sm" />
+          {share.copyLabel}
+        </span>
+      </div>
+
+      {/* Direita, em cima: uso do plano no mês */}
+      <div
+        className={cn(card, "top-12 -right-6")}
+        style={{ animationDelay: "80ms" }}
+      >
+        <p className={cardTitle}>{usage.title}</p>
+        <p className="mt-3 flex items-baseline gap-1">
+          <span
+            key={usageCount}
+            className="inline-block animate-pop text-3xl font-bold tracking-tight tabular"
+          >
+            {usageCount}
+          </span>
+          <span className="text-sm text-fg-muted tabular">/ {usage.limit}</span>
+        </p>
+        <div className="mt-3 h-2 overflow-hidden rounded-full surface-inset">
+          <div
+            className="h-full rounded-full bg-brand transition-[width] duration-(--duration-slower)"
+            style={{ width: `${(usageCount / usage.limit) * 100}%` }}
+          />
+        </div>
+        <p className="mt-2 text-xs text-fg-muted">{usage.planLabel}</p>
+      </div>
+
+      {/* Direita, embaixo: cliente escolhendo o horário */}
+      <div
+        className={cn(card, "top-72 right-10")}
+        style={{ animationDelay: "240ms" }}
+      >
+        <div className="flex items-center justify-between">
+          <p className={cardTitle}>{booking.title}</p>
+          <span className="text-xs text-fg-muted">{booking.dayLabel}</span>
+        </div>
+
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {booking.times.map((time) => (
+            <span
+              key={time}
+              className={slotChip({
+                status:
+                  isSelected && time === booking.selectedTime
+                    ? "selected"
+                    : bookedTimes.has(time)
+                      ? "unavailable"
+                      : "available",
+              })}
+            >
+              {time}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-3 h-control-sm">
+          {isConfirmed ? (
+            <span className="flex h-full animate-fade-in items-center justify-center gap-2 rounded-md border border-success-border bg-success-bg text-sm font-medium text-success-fg">
+              <CheckIcon className="size-icon-sm" />
+              {booking.confirmedLabel}
+            </span>
+          ) : (
+            <span
+              className={cn(
+                "flex h-full items-center justify-center rounded-md text-sm font-medium",
+                isSelected
+                  ? "text-brand-on surface-brand"
+                  : "text-fg-disabled surface-inset",
+              )}
+            >
+              {booking.confirmLabel}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

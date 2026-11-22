@@ -1,5 +1,5 @@
+import { CalendarIcon, LinkIcon, ListIcon } from "lucide-react";
 import Reveal from "@/shared/components/ui/reveal";
-import { CalendarIcon, LinkIcon, ListIcon } from "@/shared/components/ui/icons";
 import SectionHeading from "./section-heading";
 
 const stepIcons = {
@@ -8,7 +8,7 @@ const stepIcons = {
   calendar: <CalendarIcon className="size-icon-lg" />,
 };
 
-export type HowItWorksStep = {
+type HowItWorksStep = {
   icon: keyof typeof stepIcons;
   title: string;
   description: string;
@@ -19,6 +19,8 @@ export type HowItWorksProps = {
   eyebrow: string;
   title: string;
   description: string;
+  /** Rótulo de cada etapa, seguido do número (ex.: "Passo" → "Passo 1") */
+  stepLabel: string;
   steps: HowItWorksStep[];
 };
 
@@ -27,6 +29,7 @@ const HowItWorks = ({
   eyebrow,
   title,
   description,
+  stepLabel,
   steps,
 }: HowItWorksProps) => {
   return (
@@ -40,27 +43,44 @@ const HowItWorks = ({
           />
         </Reveal>
 
-        <ol className="mt-14 grid gap-6 md:grid-cols-3">
-          {steps.map((step, index) => (
-            <li key={step.title}>
-              <Reveal delay={index * 120} className="h-full">
-                <article className="h-full rounded-2xl border border-border bg-canvas p-6 transition-[translate,box-shadow] duration-(--duration-base) hover:-translate-y-1 hover:shadow-md sm:p-8">
-                  <div className="flex items-center justify-between">
-                    <span className="flex size-12 items-center justify-center rounded-xl bg-brand-subtle text-brand">
+        <ol className="mt-16 grid md:grid-cols-3 md:gap-8">
+          {steps.map((step, index) => {
+            const isLast = index === steps.length - 1;
+
+            return (
+              <li key={step.title}>
+                <Reveal
+                  delay={index * 140}
+                  className="flex h-full gap-5 md:flex-col md:gap-6"
+                >
+                  {/* Marcador da etapa e trilha até a próxima */}
+                  <div className="flex flex-col items-center md:flex-row">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border bg-brand-subtle text-brand">
                       {stepIcons[step.icon]}
                     </span>
-                    <span className="font-mono text-sm text-fg-disabled tabular">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    {!isLast && (
+                      <span
+                        aria-hidden="true"
+                        className="mt-3 w-0 flex-1 border-l border-dashed border-border-strong md:mt-0 md:ml-4 md:-mr-8 md:h-0 md:w-auto md:border-t md:border-l-0"
+                      />
+                    )}
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold">{step.title}</h3>
-                  <p className="mt-2 leading-relaxed text-fg-secondary">
-                    {step.description}
-                  </p>
-                </article>
-              </Reveal>
-            </li>
-          ))}
+
+                  <div className={isLast ? "" : "pb-12 md:pb-0"}>
+                    <p className="font-mono text-xs font-medium tracking-wide text-brand uppercase">
+                      {stepLabel} {index + 1}
+                    </p>
+                    <h3 className="mt-2 text-xl font-semibold tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 leading-relaxed text-fg-secondary">
+                      {step.description}
+                    </p>
+                  </div>
+                </Reveal>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>

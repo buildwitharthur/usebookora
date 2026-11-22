@@ -1,15 +1,14 @@
-import Link from "next/link";
+import { Slot } from "@radix-ui/react-slot";
 import type { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "@/shared/utils/cn";
 
 export const buttonVariants = tv({
-  base: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors select-none active:translate-y-px disabled:pointer-events-none disabled:opacity-50",
+  base: "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0",
   variants: {
     variant: {
-      primary: "bg-brand text-brand-on shadow-sm hover:bg-brand-hover",
-      secondary:
-        "border border-border bg-surface text-fg shadow-xs hover:border-border-strong hover:bg-subtle",
+      primary: "surface-brand text-brand-on",
+      secondary: "surface-raised text-fg emboss active:surface-inset",
       ghost: "text-fg-secondary hover:bg-subtle hover:text-fg",
     },
     size: {
@@ -24,34 +23,26 @@ export const buttonVariants = tv({
   },
 });
 
-type ButtonVariants = VariantProps<typeof buttonVariants>;
-
-export type ButtonProps = ComponentProps<"button"> & ButtonVariants;
+export type ButtonProps = ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    /** Renderiza o filho (ex.: `<Link>`) com o visual do botão */
+    asChild?: boolean;
+  };
 
 export const Button = ({
   className,
   variant,
   size,
-  type = "button",
+  asChild = false,
   ...props
-}: ButtonProps) => (
-  <button
-    type={type}
-    className={cn(buttonVariants({ variant, size }), className)}
-    {...props}
-  />
-);
+}: ButtonProps) => {
+  const Comp = asChild ? Slot : "button";
 
-export type ButtonLinkProps = ComponentProps<typeof Link> & ButtonVariants;
-
-export const ButtonLink = ({
-  className,
-  variant,
-  size,
-  ...props
-}: ButtonLinkProps) => (
-  <Link
-    className={cn(buttonVariants({ variant, size }), className)}
-    {...props}
-  />
-);
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
+};

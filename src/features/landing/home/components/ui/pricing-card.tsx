@@ -1,14 +1,14 @@
+import Link from "next/link";
 import { tv } from "tailwind-variants";
-import { ButtonLink } from "@/shared/components/ui/button";
-import { CheckIcon } from "@/shared/components/ui/icons";
+import { CheckIcon } from "lucide-react";
+import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 import type { Plan } from "@/shared/constants/plans";
 import { formatCurrency } from "@/shared/utils/format-currency";
 
 const pricingCard = tv({
   slots: {
     root: "relative flex h-full flex-col rounded-2xl border bg-surface p-8 transition-shadow duration-(--duration-base)",
-    badge:
-      "absolute -top-3 left-8 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-brand-on shadow-sm",
     name: "text-lg font-semibold",
     check: "mt-0.5 size-icon-sm shrink-0",
   },
@@ -31,6 +31,7 @@ export type PricingCardProps = {
   plan: Plan;
   periodLabel: string;
   highlightLabel: string;
+  /** Texto do botão; `{plan}` é trocado pelo nome do plano */
   ctaLabel: string;
   ctaHref: string;
 };
@@ -47,7 +48,9 @@ const PricingCard = ({
   return (
     <article className={styles.root()}>
       {plan.highlighted && (
-        <span className={styles.badge()}>{highlightLabel}</span>
+        <Badge variant="brand" className="absolute -top-3 left-8 font-semibold">
+          {highlightLabel}
+        </Badge>
       )}
 
       <h3 className={styles.name()}>{plan.name}</h3>
@@ -60,14 +63,16 @@ const PricingCard = ({
         <span className="text-sm text-fg-muted">{periodLabel}</span>
       </p>
 
-      <ButtonLink
-        href={`${ctaHref}?plan=${plan.id}`}
+      <Button
+        asChild
         variant={plan.highlighted ? "primary" : "secondary"}
         size="lg"
         className="mt-6 w-full"
       >
-        {ctaLabel}
-      </ButtonLink>
+        <Link href={`${ctaHref}?plan=${plan.id}`}>
+          {ctaLabel.replace("{plan}", plan.name)}
+        </Link>
+      </Button>
 
       <ul className="mt-8 space-y-3 border-t border-border pt-8">
         {plan.features.map((feature) => (

@@ -1,12 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { LinkItem } from "@/shared/types";
+
+type FooterLink = {
+  label: string;
+  href: string;
+};
 
 export type LandingFooterProps = {
   homeLabel: string;
   navLabel: string;
   tagline: string;
-  links: LinkItem[];
+  links: FooterLink[];
   copyright: string;
 };
 
@@ -24,7 +28,7 @@ const LandingFooter = ({
           <Link
             href="/"
             aria-label={homeLabel}
-            className="inline-block rounded-md"
+            className="inline-block rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus"
           >
             <Image
               src="/brand/logo.svg"
@@ -43,7 +47,7 @@ const LandingFooter = ({
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="rounded-sm text-fg-secondary transition-colors hover:text-fg"
+                  className="rounded-sm text-fg-secondary transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
                 >
                   {link.label}
                 </Link>
