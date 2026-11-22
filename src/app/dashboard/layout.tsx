@@ -1,3 +1,9 @@
-import DashboardLayout from "@/shared/components/layouts/dashboard";
+import React from "react";
 
-export default DashboardLayout;
+type DashboardLayoutProps = {
+  children: React.ReactNode;
+};
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  return children;
+}
