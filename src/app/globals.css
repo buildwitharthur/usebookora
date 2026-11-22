@@ -1,0 +1,414 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens do Bookora — fonte: specs/assets/tokens.json
+ * Os namespaces abaixo substituem os padrões do Tailwind: só existem as
+ * classes que o design system define (ex.: bg-canvas, text-fg-muted,
+ * rounded-lg, shadow-md, animate-slide-up, max-w-narrow).
+ */
+
+@theme {
+  /* ---------- Cores ---------- */
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+
+  /* Marca: sobrescrita em runtime na página pública (ver [data-brand]) */
+  --color-brand: #4f46e5;
+  --color-brand-hover: #4338ca;
+  --color-brand-subtle: #eef2ff;
+  --color-brand-on: #ffffff;
+
+  /* Opções de cor em Configurações */
+  --color-preset-indigo: #4f46e5;
+  --color-preset-blue: #2563eb;
+  --color-preset-teal: #0d9488;
+  --color-preset-green: #16a34a;
+  --color-preset-orange: #ea580c;
+  --color-preset-rose: #e11d48;
+  --color-preset-purple: #9333ea;
+  --color-preset-graphite: #27272a;
+
+  /* Fundos */
+  --color-canvas: var(--color-neutral-50);
+  --color-surface: var(--color-neutral-0);
+  --color-subtle: var(--color-neutral-100);
+  --color-inverse: var(--color-neutral-900);
+
+  /* Texto */
+  --color-fg: var(--color-neutral-900);
+  --color-fg-secondary: var(--color-neutral-600);
+  --color-fg-muted: var(--color-neutral-500);
+  --color-fg-disabled: var(--color-neutral-400);
+  --color-fg-inverse: var(--color-neutral-0);
+  --color-link: var(--color-brand);
+
+  /* Bordas */
+  --color-border: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+  --color-focus: var(--color-brand);
+
+  /* Status */
+  --color-success: var(--color-green-600);
+  --color-success-bg: var(--color-green-50);
+  --color-success-fg: var(--color-green-700);
+  --color-success-border: var(--color-green-100);
+
+  --color-warning: var(--color-amber-500);
+  --color-warning-bg: var(--color-amber-50);
+  --color-warning-fg: var(--color-amber-700);
+  --color-warning-border: var(--color-amber-100);
+
+  --color-danger: var(--color-red-600);
+  --color-danger-bg: var(--color-red-50);
+  --color-danger-fg: var(--color-red-700);
+  --color-danger-border: var(--color-red-100);
+
+  --color-info: var(--color-blue-600);
+  --color-info-bg: var(--color-blue-50);
+  --color-info-fg: var(--color-blue-700);
+  --color-info-border: var(--color-blue-100);
+
+  /* Slots (blocos de 30 min) */
+  --color-slot-available: var(--color-neutral-0);
+  --color-slot-hover: var(--color-brand-subtle);
+  --color-slot-selected: var(--color-brand);
+  --color-slot-unavailable: var(--color-neutral-100);
+
+  --color-overlay: #09090b80;
+  --color-skeleton: var(--color-neutral-200);
+
+  /* ---------- Tipografia ---------- */
+  --font-weight-*: initial;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  --leading-*: initial;
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-*: initial;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+
+  /* ---------- Espaçamento e tamanhos (escala de 4px) ---------- */
+  --spacing: 0.25rem;
+
+  --spacing-control-sm: 2rem;
+  --spacing-control-md: 2.5rem;
+  --spacing-control-lg: 3rem;
+  --spacing-touch: 2.75rem;
+  --spacing-icon-sm: 1rem;
+  --spacing-icon-md: 1.25rem;
+  --spacing-icon-lg: 1.5rem;
+  --spacing-avatar-sm: 2rem;
+  --spacing-avatar-md: 3rem;
+  --spacing-avatar-lg: 5rem;
+  --spacing-avatar-xl: 7.5rem;
+  --spacing-sidebar: 15rem;
+
+  --container-*: initial;
+  --container-narrow: 30rem;
+  --container-md: 48rem;
+  --container-wide: 75rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* ---------- Raios ---------- */
+  --radius-*: initial;
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ---------- Sombras ---------- */
+  --shadow-*: initial;
+  --shadow-xs: 0 1px 2px 0 #0000000d;
+  --shadow-sm: 0 1px 3px 0 #0000000f, 0 1px 2px 0 #0000000a;
+  --shadow-md: 0 4px 8px -2px #00000014, 0 2px 4px -2px #0000000a;
+  --shadow-lg: 0 12px 24px -4px #0000001a, 0 4px 8px -4px #0000000a;
+  --shadow-focus: 0 0 0 3px
+    color-mix(in oklab, var(--color-focus) 35%, transparent);
+
+  /* ---------- Movimento ---------- */
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-emphasized: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-linear: cubic-bezier(0, 0, 1, 1);
+
+  --default-transition-duration: 120ms;
+  --default-transition-timing-function: var(--ease-standard);
+
+  --animate-*: initial;
+  --animate-fade-in: fade-in 200ms var(--ease-enter) both;
+  --animate-fade-out: fade-out 200ms var(--ease-exit) both;
+  --animate-slide-up: slide-up 320ms var(--ease-enter) both;
+  --animate-slide-down: slide-down 200ms var(--ease-enter) both;
+  --animate-scale-in: scale-in 200ms var(--ease-enter) both;
+  --animate-pop: pop 480ms var(--ease-emphasized) both;
+  --animate-check-draw: check-draw 480ms var(--ease-standard) 150ms both;
+  --animate-shake: shake 320ms var(--ease-standard);
+  --animate-pulse: pulse 1200ms var(--ease-standard) infinite;
+  --animate-spin: spin 800ms var(--ease-linear) infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes pop {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes check-draw {
+    from {
+      stroke-dashoffset: 24;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-4px);
+    }
+    75% {
+      transform: translateX(4px);
+    }
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Fontes carregadas via next/font no layout */
+@theme inline {
+  --font-*: initial;
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+}
+
+/* Tokens sem namespace no Tailwind: usar com z-(--z-modal), duration-(--duration-slow) etc. */
+:root {
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-slower: 480ms;
+  --duration-loop: 1200ms;
+
+  --stagger-list: 40ms;
+
+  --opacity-disabled: 0.5;
+  --opacity-muted: 0.7;
+
+  --border-thin: 1px;
+  --border-thick: 2px;
+}
+
+/*
+ * Página pública: o estabelecimento define a cor com
+ * <div data-brand style={{ "--color-brand": cor }}>. As variações são
+ * derivadas dela aqui. Para cores claras, definir também --color-brand-on.
+ */
+[data-brand] {
+  --color-brand-hover: color-mix(in oklab, var(--color-brand) 85%, black);
+  --color-brand-subtle: color-mix(in oklab, var(--color-brand) 10%, white);
+  --color-link: var(--color-brand);
+  --color-focus: var(--color-brand);
+  --color-slot-hover: var(--color-brand-subtle);
+  --color-slot-selected: var(--color-brand);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: var(--leading-normal);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-subtle);
+    color: var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+
+  /* Evita zoom no iOS: inputs com no mínimo 16px */
+  input,
+  select,
+  textarea {
+    font-size: max(var(--text-md), 1em);
+  }
+}
+
+/* Horários, preços e contadores */
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --default-transition-duration: 0ms;
+    --animate-slide-up: fade-in 200ms var(--ease-enter) both;
+    --animate-slide-down: fade-in 200ms var(--ease-enter) both;
+    --animate-scale-in: fade-in 200ms var(--ease-enter) both;
+    --animate-pop: fade-in 200ms var(--ease-enter) both;
+    --animate-shake: none;
+  }
+}
