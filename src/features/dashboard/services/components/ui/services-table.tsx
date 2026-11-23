@@ -45,7 +45,7 @@ const ServicesTable = ({ services }: ServicesTableProps) => {
                 {formatCurrency(service.priceCents)}
               </td>
               <td className={styles.cell({ class: "pr-2 text-right" })}>
-                <ServiceRowActions serviceName={service.name} />
+                <ServiceRowActions service={service} />
               </td>
             </tr>
           ))}

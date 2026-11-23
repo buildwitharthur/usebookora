@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useState, type ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,35 +9,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
+import type { ServiceListItem } from "../../data-access/get-services";
+import ServiceForm from "./service-form";
 
 type ServiceDialogProps = {
-  /** Elemento que abre o dialog (ex.: botão "Novo serviço" ou item "Editar") */
-  trigger: ReactNode;
-  title: string;
-  description?: string;
-  /** Conteúdo do dialog (o formulário de serviço) */
-  children: ReactNode;
+  /** Com serviço, edita; sem serviço, cria */
+  service?: ServiceListItem;
+  /** Elemento que abre o dialog. Sem ele, controle pelo `open` (ex.: a partir de um menu) */
+  children?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
-// Esqueleto: ainda não está em uso. Criar e editar entram com o formulário.
 const ServiceDialog = ({
-  trigger,
-  title,
-  description,
+  service,
   children,
+  open: openProp,
+  onOpenChange,
 }: ServiceDialogProps) => {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = openProp ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
 
-      {/* Sem descrição, avisa o Radix para não exigir `aria-describedby` */}
-      <DialogContent {...(!description && { "aria-describedby": undefined })}>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
+
+      {/* O form só existe com o dialog aberto: cada abertura começa limpa */}
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogTitle>
+            {service ? "Editar serviço" : "Novo serviço"}
+          </DialogTitle>
+          <DialogDescription>
+            {service
+              ? "As mudanças aparecem na hora na sua página de agendamentos."
+              : "O serviço aparece na sua página de agendamentos com duração e preço."}
+          </DialogDescription>
         </DialogHeader>
 
-        {children}
+        <ServiceForm service={service} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

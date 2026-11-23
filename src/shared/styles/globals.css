@@ -214,6 +214,15 @@
   /* Skeleton de carregamento (usar com motion-safe:) */
   --animate-pulse: pulse var(--duration-loop) var(--ease-standard) infinite;
 
+  /* Ícones de carregamento (LoaderCircle) */
+  --animate-spin: spin 1s var(--ease-linear) infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   @keyframes pulse {
     50% {
       opacity: 0.5;

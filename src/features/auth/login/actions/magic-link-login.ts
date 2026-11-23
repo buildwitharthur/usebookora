@@ -4,6 +4,7 @@ import { AuthError } from "next-auth";
 import { z } from "zod";
 
 import { signIn } from "@/shared/lib/auth";
+import { getFormValues } from "@/shared/utils/get-form-values";
 import { magicLinkLoginSchema } from "../schemas/magic-link-login-schema";
 
 export type MagicLinkLoginState = {
@@ -19,8 +20,7 @@ export const magicLinkLoginAction = async (
   _prevState: MagicLinkLoginState,
   formData: FormData,
 ): Promise<MagicLinkLoginState> => {
-  const rawEmail = formData.get("email");
-  const email = typeof rawEmail === "string" ? rawEmail : "";
+  const { email } = getFormValues(formData, ["email"]);
 
   const parsed = magicLinkLoginSchema.safeParse({ email });
 

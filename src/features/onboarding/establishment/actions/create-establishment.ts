@@ -6,6 +6,7 @@ import { getCurrentEstablishment } from "@/shared/data-access/establishment/get-
 import { getSessionOrThrow } from "@/shared/guards/session/get-session-or-throw";
 import { prisma } from "@/shared/lib/prisma";
 import { generateSlug } from "@/shared/utils/generate-slug";
+import { getFormValues } from "@/shared/utils/get-form-values";
 import { createEstablishmentSchema } from "../schemas/create-establishment-schema";
 
 export type CreateEstablishmentState = {
@@ -28,8 +29,7 @@ export const createEstablishmentAction = async (
     return { success: true };
   }
 
-  const rawName = formData.get("name");
-  const name = typeof rawName === "string" ? rawName : "";
+  const { name } = getFormValues(formData, ["name"]);
 
   const parsed = createEstablishmentSchema.safeParse({ name });
 

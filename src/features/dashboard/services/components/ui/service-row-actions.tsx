@@ -1,4 +1,7 @@
+"use client";
+
 import { EllipsisIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
@@ -7,37 +10,50 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
+import type { ServiceListItem } from "../../data-access/get-services";
+import ServiceDialog from "./service-dialog";
 
 type ServiceRowActionsProps = {
-  serviceName: string;
+  service: ServiceListItem;
 };
 
-// Editar e Excluir ainda sem ação: entram com o formulário e a exclusão
-const ServiceRowActions = ({ serviceName }: ServiceRowActionsProps) => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`Ações de ${serviceName}`}
-        >
-          <EllipsisIcon className="size-icon-sm" />
-        </Button>
-      </DropdownMenuTrigger>
+const ServiceRowActions = ({ service }: ServiceRowActionsProps) => {
+  const [editOpen, setEditOpen] = useState(false);
 
-      <DropdownMenuContent align="end" className="min-w-40">
-        <DropdownMenuItem>
-          <PencilIcon />
-          Editar
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant="danger">
-          <Trash2Icon />
-          Excluir
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Ações de ${service.name}`}
+          >
+            <EllipsisIcon className="size-icon-sm" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end" className="min-w-40">
+          <DropdownMenuItem onSelect={() => setEditOpen(true)}>
+            <PencilIcon />
+            Editar
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {/* Ainda sem ação: a exclusão entra na próxima etapa */}
+          <DropdownMenuItem variant="danger">
+            <Trash2Icon />
+            Excluir
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Fora do menu: o menu fecha ao escolher "Editar" e levaria o dialog junto */}
+      <ServiceDialog
+        service={service}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+      />
+    </>
   );
 };
 
