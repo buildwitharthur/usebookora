@@ -345,7 +345,7 @@ const StorefrontIllustration = (props: ComponentProps<"svg">) => {
         width="2"
         height="11"
         rx="1"
-        className="fill-brand motion-safe:animate-caret"
+        className="fill-brand"
       />
 
       {/* Vaso de planta */}

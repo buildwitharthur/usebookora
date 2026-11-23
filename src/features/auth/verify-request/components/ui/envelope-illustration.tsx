@@ -119,7 +119,7 @@ const EnvelopeIllustration = (props: ComponentProps<"svg">) => {
         />
 
         {/* Carta saindo do envelope */}
-        <g className="animate-slide-up [animation-delay:120ms]">
+        <g>
           <g filter="url(#vrf-lift)">
             <rect
               x="66"

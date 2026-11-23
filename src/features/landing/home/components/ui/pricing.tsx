@@ -1,5 +1,4 @@
-import Reveal from "@/shared/components/ui/reveal";
-import type { Plan } from "@/shared/constants/plans";
+﻿import type { Plan } from "@/shared/constants/plans";
 import PricingCard from "./pricing-card";
 import SectionHeading from "./section-heading";
 
@@ -31,19 +30,18 @@ const Pricing = ({
   return (
     <section id={id} className="scroll-mt-16">
       <div className="mx-auto max-w-wide px-4 py-20 sm:px-6 sm:py-28">
-        <Reveal>
+        <div>
           <SectionHeading
             eyebrow={eyebrow}
             title={title}
             description={description}
           />
-        </Reveal>
+        </div>
 
         <div className="mt-14 flex flex-wrap justify-center gap-6">
-          {plans.map((plan, index) => (
-            <Reveal
+          {plans.map((plan) => (
+            <div
               key={plan.id}
-              delay={index * 120}
               className="w-full max-w-narrow sm:w-auto sm:flex-1 sm:basis-72"
             >
               <PricingCard
@@ -53,7 +51,7 @@ const Pricing = ({
                 ctaLabel={ctaLabel}
                 ctaHref={ctaHref}
               />
-            </Reveal>
+            </div>
           ))}
         </div>
 

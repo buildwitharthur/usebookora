@@ -44,7 +44,7 @@ export type HeroShowcaseProps = {
 /** Etapas do loop: 0 escolhendo horário → 1 horário selecionado → 2 confirmado */
 const STEP_DURATIONS = [1600, 1300, 3800];
 
-const card = "absolute w-64 animate-slide-up rounded-2xl p-4 surface-floating";
+const card = "absolute w-64 rounded-2xl p-4 surface-floating";
 
 const cardTitle = "text-sm font-semibold";
 
@@ -55,7 +55,7 @@ const slotChip = tv({
     status: {
       available: "text-fg surface-raised emboss",
       unavailable: "text-fg-disabled line-through surface-inset",
-      selected: "animate-pop text-brand-on surface-brand",
+      selected: "text-brand-on surface-brand",
     },
   },
 });
@@ -64,7 +64,7 @@ const agendaRow = tv({
   base: "flex items-center gap-3 rounded-md px-2 py-1.5",
   variants: {
     isNew: {
-      true: "animate-slide-down bg-brand-subtle",
+      true: "bg-brand-subtle",
     },
   },
 });
@@ -109,7 +109,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
         <div className="flex items-center justify-between">
           <p className={cardTitle}>{agenda.title}</p>
           <span className="flex items-center gap-1.5 text-xs font-medium text-success-fg">
-            <span className="size-1.5 animate-pulse rounded-full bg-success" />
+            <span className="size-1.5 rounded-full bg-success" />
             {agenda.liveLabel}
           </span>
         </div>
@@ -133,10 +133,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
       </div>
 
       {/* Esquerda, embaixo: link da página */}
-      <div
-        className={cn(card, "top-96 left-10")}
-        style={{ animationDelay: "160ms" }}
-      >
+      <div className={cn(card, "top-96 left-10")}>
         <p className={cardTitle}>{share.title}</p>
         <p className="mt-3 truncate rounded-md px-3 py-2 font-mono text-xs text-fg-secondary surface-inset">
           {share.url}
@@ -148,16 +145,10 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
       </div>
 
       {/* Direita, em cima: uso do plano no mês */}
-      <div
-        className={cn(card, "top-12 -right-6")}
-        style={{ animationDelay: "80ms" }}
-      >
+      <div className={cn(card, "top-12 -right-6")}>
         <p className={cardTitle}>{usage.title}</p>
         <p className="mt-3 flex items-baseline gap-1">
-          <span
-            key={usageCount}
-            className="inline-block animate-pop text-3xl font-bold tracking-tight tabular"
-          >
+          <span className="inline-block text-3xl font-bold tracking-tight tabular">
             {usageCount}
           </span>
           <span className="text-sm text-fg-muted tabular">/ {usage.limit}</span>
@@ -172,10 +163,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
       </div>
 
       {/* Direita, embaixo: cliente escolhendo o horário */}
-      <div
-        className={cn(card, "top-72 right-10")}
-        style={{ animationDelay: "240ms" }}
-      >
+      <div className={cn(card, "top-72 right-10")}>
         <div className="flex items-center justify-between">
           <p className={cardTitle}>{booking.title}</p>
           <span className="text-xs text-fg-muted">{booking.dayLabel}</span>
@@ -201,7 +189,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
 
         <div className="mt-3 h-control-sm">
           {isConfirmed ? (
-            <span className="flex h-full animate-fade-in items-center justify-center gap-2 rounded-md border border-success-border bg-success-bg text-sm font-medium text-success-fg">
+            <span className="flex h-full items-center justify-center gap-2 rounded-md border border-success-border bg-success-bg text-sm font-medium text-success-fg">
               <CheckIcon className="size-icon-sm" />
               {booking.confirmedLabel}
             </span>

@@ -1,5 +1,4 @@
 import { CalendarIcon, LinkIcon, ListIcon } from "lucide-react";
-import Reveal from "@/shared/components/ui/reveal";
 import SectionHeading from "./section-heading";
 
 const stepIcons = {
@@ -35,13 +34,13 @@ const HowItWorks = ({
   return (
     <section id={id} className="scroll-mt-16 border-y border-border bg-surface">
       <div className="mx-auto max-w-wide px-4 py-20 sm:px-6 sm:py-28">
-        <Reveal>
+        <div>
           <SectionHeading
             eyebrow={eyebrow}
             title={title}
             description={description}
           />
-        </Reveal>
+        </div>
 
         <ol className="mt-16 grid md:grid-cols-3 md:gap-8">
           {steps.map((step, index) => {
@@ -49,10 +48,7 @@ const HowItWorks = ({
 
             return (
               <li key={step.title}>
-                <Reveal
-                  delay={index * 140}
-                  className="flex h-full gap-5 md:flex-col md:gap-6"
-                >
+                <div className="flex h-full gap-5 md:flex-col md:gap-6">
                   {/* Marcador da etapa e trilha até a próxima */}
                   <div className="flex flex-col items-center md:flex-row">
                     <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border bg-brand-subtle text-brand">
@@ -77,7 +73,7 @@ const HowItWorks = ({
                       {step.description}
                     </p>
                   </div>
-                </Reveal>
+                </div>
               </li>
             );
           })}

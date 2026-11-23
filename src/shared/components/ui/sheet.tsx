@@ -28,13 +28,13 @@ export const SheetContent = ({
   <DialogPrimitive.Portal>
     <DialogPrimitive.Overlay
       data-slot="sheet-overlay"
-      className="fixed inset-0 z-(--z-overlay) bg-overlay data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in"
+      className="fixed inset-0 z-(--z-overlay) bg-overlay"
     />
     <DialogPrimitive.Content
       data-slot="sheet-content"
       aria-describedby={undefined}
       className={cn(
-        "fixed inset-y-0 left-0 z-(--z-modal) flex w-64 max-w-[85vw] flex-col shadow-lg outline-none data-[state=closed]:animate-slide-out-left data-[state=open]:animate-slide-in-left",
+        "fixed inset-y-0 left-0 z-(--z-modal) flex w-64 max-w-[85vw] flex-col shadow-lg outline-none",
         className,
       )}
       {...props}

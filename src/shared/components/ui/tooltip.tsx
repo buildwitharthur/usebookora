@@ -18,7 +18,7 @@ export const TooltipContent = ({
       data-slot="tooltip-content"
       sideOffset={sideOffset}
       className={cn(
-        "z-(--z-toast) rounded-sm bg-inverse px-2 py-1 text-xs text-fg-inverse shadow-md data-[state=closed]:animate-fade-out data-[state=delayed-open]:animate-fade-in data-[state=instant-open]:animate-fade-in",
+        "z-(--z-toast) rounded-sm bg-inverse px-2 py-1 text-xs text-fg-inverse shadow-md",
         className,
       )}
       {...props}

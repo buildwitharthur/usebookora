@@ -46,9 +46,6 @@ export type HeroProps = {
   showcase: HeroShowcaseProps;
 };
 
-/** Atraso escalonado para a entrada dos elementos do hero */
-const enterDelay = (index: number) => ({ animationDelay: `${index * 80}ms` });
-
 const Hero = ({
   badge,
   title,
@@ -71,18 +68,15 @@ const Hero = ({
         <HeroShowcase {...showcase} />
 
         <div className="mx-auto flex max-w-md flex-col items-center px-4 pt-20 pb-24 text-center sm:px-6 sm:pt-28 sm:pb-32">
-          <Badge className="animate-slide-up" style={enterDelay(0)}>
+          <Badge>
             <span
               aria-hidden="true"
-              className="size-1.5 animate-pulse rounded-full bg-success"
+              className="size-1.5 rounded-full bg-success"
             />
             {badge}
           </Badge>
 
-          <h1
-            className="mt-6 animate-slide-up text-4xl leading-tight font-bold tracking-tight text-balance sm:text-5xl sm:leading-snug"
-            style={enterDelay(1)}
-          >
+          <h1 className="mt-6 text-4xl leading-tight font-bold tracking-tight text-balance sm:text-5xl sm:leading-snug">
             {title.lead}{" "}
             <span className="rounded-xl bg-brand-subtle px-3 text-brand box-decoration-clone">
               {title.highlight}
@@ -94,8 +88,7 @@ const Hero = ({
                 aria-hidden="true"
                 viewBox="0 0 200 12"
                 preserveAspectRatio="none"
-                className="absolute -bottom-1 left-0 h-3 w-full animate-fade-in text-brand"
-                style={enterDelay(6)}
+                className="absolute -bottom-1 left-0 h-3 w-full text-brand"
               >
                 <path
                   d="M2 9C40 3 92 2 132 5S186 10 198 4"
@@ -109,17 +102,11 @@ const Hero = ({
             </span>
           </h1>
 
-          <p
-            className="mt-6 max-w-narrow animate-slide-up text-lg leading-relaxed text-pretty text-fg-secondary"
-            style={enterDelay(2)}
-          >
+          <p className="mt-6 max-w-narrow text-lg leading-relaxed text-pretty text-fg-secondary">
             {description}
           </p>
 
-          <div
-            className="mt-8 grid w-full animate-slide-up gap-3 sm:w-auto sm:grid-cols-2"
-            style={enterDelay(3)}
-          >
+          <div className="mt-8 grid w-full gap-3 sm:w-auto sm:grid-cols-2">
             <Button asChild size="lg" className="group">
               <Link href={primaryCta.href}>
                 {primaryCta.label}
@@ -131,12 +118,7 @@ const Hero = ({
             </Button>
           </div>
 
-          <p
-            className="mt-4 animate-fade-in text-xs text-fg-muted"
-            style={enterDelay(5)}
-          >
-            {note}
-          </p>
+          <p className="mt-4 text-xs text-fg-muted">{note}</p>
         </div>
       </div>
 

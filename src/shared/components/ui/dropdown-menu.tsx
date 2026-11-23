@@ -19,7 +19,7 @@ export const DropdownMenuContent = ({
       sideOffset={sideOffset}
       className={cn(
         // Mesmo z do modal: abre também de dentro do drawer no mobile
-        "z-(--z-modal) min-w-48 overflow-hidden rounded-md border border-border bg-surface p-1 text-sm text-fg shadow-md data-[state=closed]:animate-fade-out data-[state=open]:animate-scale-in",
+        "z-(--z-modal) min-w-48 overflow-hidden rounded-md border border-border bg-surface p-1 text-sm text-fg shadow-md",
         className,
       )}
       {...props}

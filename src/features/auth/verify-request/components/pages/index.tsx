@@ -22,7 +22,7 @@ const Hint = ({ icon, children }: HintProps) => (
 
 const VerifyRequestPage = () => {
   return (
-    <div className="flex animate-slide-up flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <header className="flex flex-col items-center gap-4 text-center">
         <EnvelopeIllustration className="-mb-2 w-56" />
 

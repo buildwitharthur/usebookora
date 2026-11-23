@@ -44,7 +44,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
 
       <main className="flex flex-1 flex-col items-center justify-center px-4 pt-4 pb-16 sm:px-6">
         {/* Fica no layout para não reanimar ao trocar de etapa */}
-        <StorefrontIllustration className="mb-6 w-full max-w-80 animate-scale-in" />
+        <StorefrontIllustration className="mb-6 w-full max-w-80" />
         {children}
       </main>
     </div>

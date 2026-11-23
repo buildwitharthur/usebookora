@@ -7,7 +7,7 @@ const linkClass =
 
 const LoginPage = () => {
   return (
-    <div className="flex animate-slide-up flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <header className="flex flex-col items-center gap-3 text-center">
         <Link
           href="/"
