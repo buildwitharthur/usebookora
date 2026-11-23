@@ -1,6 +1,6 @@
 import React from "react";
 
-import { verifyPlan } from "@/shared/utils/verify-plan";
+import { redirectIfNoActivePlan } from "@/shared/guards/plan";
 
 type WithPlanLayoutProps = {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ type WithPlanLayoutProps = {
 
 /** Agenda, Serviços e Configurações exigem plano ativo; Plano fica de fora */
 const WithPlanLayout = async ({ children }: WithPlanLayoutProps) => {
-  await verifyPlan();
+  await redirectIfNoActivePlan();
 
   return children;
 };

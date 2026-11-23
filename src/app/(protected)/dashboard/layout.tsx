@@ -2,14 +2,18 @@ import React from "react";
 
 import ShellLayout from "@/shared/components/layouts/shell";
 import { plans } from "@/shared/constants/plans";
-import { requiredSession } from "@/shared/utils/required-session";
+import { getEstablishmentOrRedirect } from "@/shared/guards/establishment";
+import { getSessionOrRedirect } from "@/shared/guards/session";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
-  const { user: sessionUser } = await requiredSession();
+  const [{ user: sessionUser }, establishment] = await Promise.all([
+    getSessionOrRedirect(),
+    getEstablishmentOrRedirect(),
+  ]);
 
   const user = {
     name: sessionUser.name ?? "Minha conta",
@@ -17,9 +21,8 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     image: sessionUser.image ?? null,
   };
 
-  // TODO: quando os models existirem, buscar o estabelecimento (slug) e a
-  // assinatura do usuário (plano + agendamentos do mês) no banco
-  const establishment = { slug: "meu-estabelecimento" };
+  // TODO: quando o model de assinatura existir, buscar o plano e os
+  // agendamentos do mês no banco
   const subscription = { planId: "basic", monthlyBookings: 0 };
   const plan =
     plans.find((item) => item.id === subscription.planId) ?? plans[0];

@@ -1,14 +1,14 @@
 import React from "react";
 
-import { verifyAuth } from "@/shared/utils/verify-auth";
+import { getSessionOrRedirect } from "@/shared/guards/session";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;
 };
 
 const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
-  await verifyAuth();
-  
+  await getSessionOrRedirect();
+
   return children;
 };
 

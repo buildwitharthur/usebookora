@@ -1,7 +1,7 @@
 import React from "react";
 
 import OnboardingLayout from "@/shared/components/layouts/onboarding";
-import { verifyEstablishment } from "@/shared/utils/verify-establishment";
+import { redirectIfHasEstablishment } from "@/shared/guards/establishment";
 
 type OnboardingRouteLayoutProps = {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ type OnboardingRouteLayoutProps = {
 const OnboardingRouteLayout = async ({
   children,
 }: OnboardingRouteLayoutProps) => {
-  await verifyEstablishment();
+  await redirectIfHasEstablishment();
 
   return <OnboardingLayout>{children}</OnboardingLayout>;
 };

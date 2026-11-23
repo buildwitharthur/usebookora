@@ -21,5 +21,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
     verifyRequest: "/login/verify",
+    newUser: "/onboarding",
+  },
+  callbacks: {
+    // Com sessão no banco, o callback padrão não expõe o id do usuário
+    session: ({ session, user }) => ({
+      ...session,
+      user: { ...session.user, id: user.id },
+    }),
   },
 });
