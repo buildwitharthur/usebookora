@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 import type { ServiceListItem } from "../../data-access/get-services";
+import DeleteServiceDialog from "./delete-service-dialog";
 import ServiceDialog from "./service-dialog";
 
 type ServiceRowActionsProps = {
@@ -39,11 +40,16 @@ const ServiceRowActions = ({ service }: ServiceRowActionsProps) => {
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {/* Ainda sem ação: a exclusão entra na próxima etapa */}
-          <DropdownMenuItem variant="danger">
-            <Trash2Icon />
-            Excluir
-          </DropdownMenuItem>
+          <DeleteServiceDialog service={service}>
+            {/* preventDefault: o menu continua montado enquanto a confirmação está aberta */}
+            <DropdownMenuItem
+              variant="danger"
+              onSelect={(event) => event.preventDefault()}
+            >
+              <Trash2Icon />
+              Excluir
+            </DropdownMenuItem>
+          </DeleteServiceDialog>
         </DropdownMenuContent>
       </DropdownMenu>
 

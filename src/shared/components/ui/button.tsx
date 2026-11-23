@@ -10,6 +10,7 @@ export const buttonVariants = tv({
       primary: "surface-brand text-brand-on",
       secondary: "surface-raised text-fg emboss active:surface-inset",
       ghost: "text-fg-secondary hover:bg-subtle hover:text-fg",
+      danger: "bg-danger text-fg-inverse shadow-xs hover:bg-danger-fg",
     },
     size: {
       sm: "h-control-sm px-3 text-sm",
