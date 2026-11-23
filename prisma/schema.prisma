@@ -78,10 +78,29 @@ model Establishment {
   slug   String @unique
   userId String @unique
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services Service[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("establishments")
+}
+
+model Service {
+  id              String @id @default(cuid())
+  establishmentId String
+  // citext: unicidade por estabelecimento ignora maiúsculas/minúsculas
+  name            String @db.Citext
+  // Múltiplo de 30 (tamanho do slot), garantido por CHECK na migration
+  durationMinutes Int
+  priceCents      Int
+
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([establishmentId, name])
+  @@map("services")
 }
