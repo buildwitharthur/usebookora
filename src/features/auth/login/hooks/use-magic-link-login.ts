@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 
 import {
   magicLinkLoginAction,
@@ -10,15 +11,23 @@ import {
 const initialState: MagicLinkLoginState = {};
 
 export const useMagicLinkLogin = () => {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(
     magicLinkLoginAction,
     initialState,
   );
 
+  useEffect(() => {
+    if (state.success) {
+      router.push("/login/verify");
+    }
+  }, [state, router]);
+
   return {
     state,
     formAction,
-    isPending,
+    // Mantém o form bloqueado enquanto navega após o sucesso
+    isPending: isPending || !!state.success,
     emailError: state.fieldErrors?.email?.[0],
     formError: state.error,
   };

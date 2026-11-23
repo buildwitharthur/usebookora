@@ -7,6 +7,7 @@ import { signIn } from "@/shared/lib/auth";
 import { magicLinkLoginSchema } from "../schemas/magic-link-login-schema";
 
 export type MagicLinkLoginState = {
+  success?: boolean;
   error?: string;
   fieldErrors?: {
     email?: string[];
@@ -31,9 +32,10 @@ export const magicLinkLoginAction = async (
   }
 
   try {
-    // Em caso de sucesso, o Auth.js redireciona para /login/verify
+    // `redirect: false`: a navegação para /login/verify fica no client
     await signIn("resend", {
       email: parsed.data.email,
+      redirect: false,
       redirectTo: "/dashboard",
     });
   } catch (error) {
@@ -44,9 +46,8 @@ export const magicLinkLoginAction = async (
       };
     }
 
-    // Repassa o NEXT_REDIRECT (e erros inesperados)
     throw error;
   }
 
-  return {};
+  return { success: true };
 };
