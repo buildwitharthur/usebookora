@@ -2,19 +2,19 @@ import React from "react";
 
 import ShellLayout from "@/shared/components/layouts/shell";
 import { plans } from "@/shared/constants/plans";
-import { auth } from "@/shared/lib/auth";
+import { requiredSession } from "@/shared/utils/required-session";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
-  const session = await auth();
+  const { user: sessionUser } = await requiredSession();
 
   const user = {
-    name: session?.user?.name ?? "Minha conta",
-    email: session?.user?.email ?? "",
-    image: session?.user?.image ?? null,
+    name: sessionUser.name ?? "Minha conta",
+    email: sessionUser.email ?? "",
+    image: sessionUser.image ?? null,
   };
 
   // TODO: quando os models existirem, buscar o estabelecimento (slug) e a

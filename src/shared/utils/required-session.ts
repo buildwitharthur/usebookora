@@ -1,11 +1,11 @@
-import { auth } from "@/shared/lib/auth";
+import { getSession } from "@/shared/data-access/session";
 
 export const requiredSession = async () => {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     throw new Error("Unexpected error");
   }
 
-  return session;
+  return { ...session, user: session.user };
 };

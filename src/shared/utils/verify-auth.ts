@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "@/shared/lib/auth";
+import { getSession } from "@/shared/data-access/session";
 
 export const verifyAuth = async () => {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     redirect("/login");
   }
 
-  return session;
+  return { ...session, user: session.user };
 };

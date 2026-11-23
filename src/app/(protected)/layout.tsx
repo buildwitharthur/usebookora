@@ -7,8 +7,8 @@ type ProtectedLayoutProps = {
 };
 
 const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
-  // await verifyAuth();
-
+  await verifyAuth();
+  
   return children;
 };
 
