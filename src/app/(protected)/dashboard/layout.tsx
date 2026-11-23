@@ -2,8 +2,8 @@ import React from "react";
 
 import ShellLayout from "@/shared/components/layouts/shell";
 import { plans } from "@/shared/constants/plans";
-import { getEstablishmentOrRedirect } from "@/shared/guards/establishment";
-import { getSessionOrRedirect } from "@/shared/guards/session";
+import { getEstablishmentOrRedirect } from "@/shared/guards/establishment/get-establishment-or-redirect";
+import { getSessionOrRedirect } from "@/shared/guards/session/get-session-or-redirect";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { redirectIfNoActivePlan } from "@/shared/guards/plan";
+import { redirectIfNoActivePlan } from "@/shared/guards/plan/redirect-if-no-active-plan";
 
 type WithPlanLayoutProps = {
   children: React.ReactNode;

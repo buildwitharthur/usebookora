@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getSessionOrRedirect } from "@/shared/guards/session";
+import { getSessionOrRedirect } from "@/shared/guards/session/get-session-or-redirect";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;

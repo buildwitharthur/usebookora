@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/brand/logo.svg" alt="Bookora" width="280" />
+  <img src="public/brand/logo-inverse.svg" alt="Bookora" width="280" />
 </p>
 
 <p align="center">

@@ -1,7 +1,7 @@
 import React from "react";
 
 import OnboardingLayout from "@/shared/components/layouts/onboarding";
-import { redirectIfHasEstablishment } from "@/shared/guards/establishment";
+import { redirectIfHasEstablishment } from "@/shared/guards/establishment/redirect-if-has-establishment";
 
 type OnboardingRouteLayoutProps = {
   children: React.ReactNode;

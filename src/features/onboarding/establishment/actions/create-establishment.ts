@@ -2,8 +2,8 @@
 
 import { z } from "zod";
 
-import { getEstablishmentByUserId } from "@/shared/data-access/establishment";
-import { getSessionOrThrow } from "@/shared/guards/session";
+import { getCurrentEstablishment } from "@/shared/data-access/establishment/get-current-establishment";
+import { getSessionOrThrow } from "@/shared/guards/session/get-session-or-throw";
 import { prisma } from "@/shared/lib/prisma";
 import { generateSlug } from "@/shared/utils/generate-slug";
 import { createEstablishmentSchema } from "../schemas/create-establishment-schema";
@@ -24,7 +24,7 @@ export const createEstablishmentAction = async (
   const { user } = await getSessionOrThrow();
 
   // Um estabelecimento por usuário: quem já tem segue para o dashboard
-  if (await getEstablishmentByUserId(user.id)) {
+  if (await getCurrentEstablishment()) {
     return { success: true };
   }
 

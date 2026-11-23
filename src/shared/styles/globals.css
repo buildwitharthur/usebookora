@@ -211,6 +211,14 @@
   --default-transition-timing-function: var(--ease-standard);
 
   --animate-*: initial;
+  /* Skeleton de carregamento (usar com motion-safe:) */
+  --animate-pulse: pulse var(--duration-loop) var(--ease-standard) infinite;
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.5;
+    }
+  }
 }
 
 /* Fontes carregadas via next/font no layout */

@@ -13,4 +13,6 @@ export const createEstablishmentSchema = z.object({
     }),
 });
 
-export type CreateEstablishmentInput = z.infer<typeof createEstablishmentSchema>;
+export type CreateEstablishmentInput = z.infer<
+  typeof createEstablishmentSchema
+>;
