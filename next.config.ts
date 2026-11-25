@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
-    agentFeedback: true,
+    staleTimes: { dynamic: 300 },
   },
   reactCompiler: true,
   turbopack: {
