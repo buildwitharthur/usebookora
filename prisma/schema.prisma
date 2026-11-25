@@ -17,6 +17,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   establishment Establishment?
+  subscription  Subscription?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,6 +70,45 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+// Assinatura
+enum PlanId {
+  basic
+  pro
+}
+
+// Espelha os status de assinatura do Stripe
+enum SubscriptionStatus {
+  incomplete
+  incomplete_expired
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+  paused
+}
+
+// Todo usuário tem uma: nasce no Basic (gratuito) e vira Pro ao assinar
+model Subscription {
+  id     String             @id @default(cuid())
+  userId String             @unique
+  planId PlanId             @default(basic)
+  status SubscriptionStatus @default(active)
+
+  // Campos do Stripe: nulos enquanto o usuário está no Basic
+  stripeSubscriptionId String?   @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscriptions")
 }
 
 // Domínio
