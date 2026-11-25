@@ -43,7 +43,7 @@ const Sidebar = ({ user, plan, monthlyBookings }: SidebarProps) => {
       <Separator className="bg-sidebar-border" />
 
       <div className="p-2">
-        <UserMenu {...user} />
+        <UserMenu {...user} planId={plan.id} />
       </div>
     </div>
   );

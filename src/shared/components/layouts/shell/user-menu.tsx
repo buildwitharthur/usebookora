@@ -1,7 +1,6 @@
 "use client";
 
-import { ChevronsUpDownIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
-import Link from "next/link";
+import { ChevronsUpDownIcon, LogOutIcon } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -16,6 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 import { signOutAction } from "@/shared/actions/sign-out";
+import type { PlanId } from "@/shared/constants/plans";
+import SubscriptionButton from "./subscription-button";
 
 export type ShellUser = {
   name: string;
@@ -31,10 +32,14 @@ const getInitials = (name: string) =>
     .map((part) => part[0]?.toUpperCase())
     .join("");
 
-const UserMenu = ({ name, email, image }: ShellUser) => {
+type UserMenuProps = ShellUser & {
+  planId: PlanId;
+};
+
+const UserMenu = ({ name, email, image, planId }: UserMenuProps) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-full items-center gap-2.5 rounded-md p-1.5 text-left transition-colors outline-none hover:bg-sidebar-item-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-[state=open]:bg-sidebar-item-active">
+      <DropdownMenuTrigger className="flex w-full items-center gap-2.5 rounded-md p-1.5 text-left transition-colors outline-none hover:bg-sidebar-item-hover focus-visible:bg-sidebar-item-hover focus-visible:shadow-none data-[state=open]:bg-sidebar-item-active">
         <Avatar className="size-7">
           {image && <AvatarImage src={image} alt="" />}
           <AvatarFallback className="bg-sidebar-item-active text-sidebar-fg-active">
@@ -60,12 +65,7 @@ const UserMenu = ({ name, email, image }: ShellUser) => {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/plan">
-            <CreditCardIcon />
-            Plano e uso
-          </Link>
-        </DropdownMenuItem>
+        <SubscriptionButton planId={planId} />
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="danger" onSelect={() => signOutAction()}>
           <LogOutIcon />

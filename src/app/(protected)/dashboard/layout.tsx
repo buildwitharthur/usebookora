@@ -1,7 +1,7 @@
 import React from "react";
 
 import ShellLayout from "@/shared/components/layouts/shell";
-import { plans } from "@/shared/constants/plans";
+import { getCurrentPlan } from "@/shared/data-access/subscription/get-current-plan";
 import { getEstablishmentOrRedirect } from "@/shared/guards/establishment/get-establishment-or-redirect";
 import { getSessionOrRedirect } from "@/shared/guards/session/get-session-or-redirect";
 
@@ -10,9 +10,10 @@ type DashboardLayoutProps = {
 };
 
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
-  const [{ user: sessionUser }, establishment] = await Promise.all([
-    getSessionOrRedirect(),
+  const { user: sessionUser } = await getSessionOrRedirect();
+  const [establishment, plan] = await Promise.all([
     getEstablishmentOrRedirect(),
+    getCurrentPlan(),
   ]);
 
   const user = {
@@ -21,18 +22,15 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     image: sessionUser.image ?? null,
   };
 
-  // TODO: quando o model de assinatura existir, buscar o plano e os
-  // agendamentos do mês no banco
-  const subscription = { planId: "basic", monthlyBookings: 0 };
-  const plan =
-    plans.find((item) => item.id === subscription.planId) ?? plans[0];
+  // TODO: quando o model de agendamento existir, contar os do mês no banco
+  const monthlyBookings = 0;
 
   return (
     <ShellLayout
       user={user}
       slug={establishment.slug}
       plan={plan}
-      monthlyBookings={subscription.monthlyBookings}
+      monthlyBookings={monthlyBookings}
     >
       {children}
     </ShellLayout>

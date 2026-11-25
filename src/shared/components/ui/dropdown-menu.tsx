@@ -19,7 +19,7 @@ export const DropdownMenuContent = ({
       sideOffset={sideOffset}
       className={cn(
         // Mesmo z do modal: abre também de dentro do drawer no mobile
-        "z-(--z-modal) min-w-48 overflow-hidden rounded-md border border-border bg-surface p-1 text-sm text-fg shadow-md",
+        "z-(--z-modal) min-w-48 overflow-hidden rounded-md border border-border bg-surface p-1 text-sm text-fg shadow-md outline-none focus-visible:shadow-md",
         className,
       )}
       {...props}
@@ -38,7 +38,7 @@ export const DropdownMenuItem = ({
     data-slot="dropdown-menu-item"
     data-variant={variant}
     className={cn(
-      "flex h-8 cursor-default items-center gap-2 rounded-sm px-2 text-sm outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-subtle data-[variant=danger]:text-danger [&_svg]:size-icon-sm [&_svg]:shrink-0 [&_svg]:text-fg-muted data-[variant=danger]:[&_svg]:text-danger",
+      "flex h-8 cursor-default items-center gap-2 rounded-sm px-2 text-sm outline-none select-none focus-visible:shadow-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-subtle data-[variant=danger]:text-danger [&_svg]:size-icon-sm [&_svg]:shrink-0 [&_svg]:text-fg-muted data-[variant=danger]:[&_svg]:text-danger",
       className,
     )}
     {...props}

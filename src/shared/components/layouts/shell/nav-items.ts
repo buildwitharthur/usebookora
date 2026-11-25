@@ -1,6 +1,5 @@
 import {
   CalendarDaysIcon,
-  CreditCardIcon,
   type LucideIcon,
   SettingsIcon,
   TagIcon,
@@ -17,7 +16,6 @@ export const navItems: NavItem[] = [
   { href: "/dashboard", label: "Agenda", icon: CalendarDaysIcon },
   { href: "/dashboard/services", label: "Serviços", icon: TagIcon },
   { href: "/dashboard/settings", label: "Configurações", icon: SettingsIcon },
-  { href: "/dashboard/plan", label: "Plano", icon: CreditCardIcon },
 ];
 
 export const isNavItemActive = (pathname: string, href: string) =>
