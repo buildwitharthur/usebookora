@@ -14,7 +14,7 @@ type ShellLayoutProps = {
   /** Slug da página pública, usado nas ações de compartilhar */
   slug: string;
   plan: Plan;
-  monthlyBookings: number;
+  bookingsCount: number;
 };
 
 const ShellLayout = ({
@@ -22,10 +22,10 @@ const ShellLayout = ({
   user,
   slug,
   plan,
-  monthlyBookings,
+  bookingsCount,
 }: ShellLayoutProps) => {
   const sidebar = (
-    <Sidebar user={user} plan={plan} monthlyBookings={monthlyBookings} />
+    <Sidebar user={user} plan={plan} bookingsCount={bookingsCount} />
   );
 
   return (

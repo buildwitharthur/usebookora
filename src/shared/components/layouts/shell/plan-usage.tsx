@@ -3,11 +3,11 @@ import type { Plan } from "@/shared/constants/plans";
 
 type PlanUsageProps = {
   plan: Plan;
-  monthlyBookings: number;
+  bookingsCount: number;
 };
 
-const PlanUsage = ({ plan, monthlyBookings }: PlanUsageProps) => {
-  const limit = plan.limits.monthlyBookings;
+const PlanUsage = ({ plan, bookingsCount }: PlanUsageProps) => {
+  const limit = plan.limits.bookings;
 
   return (
     <div className="rounded-md px-2.5 py-2">
@@ -16,15 +16,15 @@ const PlanUsage = ({ plan, monthlyBookings }: PlanUsageProps) => {
           Plano {plan.name}
         </span>
         <span className="tabular">
-          {limit === null ? "Ilimitado" : `${monthlyBookings}/${limit}`}
+          {limit === null ? "Ilimitado" : `${bookingsCount}/${limit}`}
         </span>
       </div>
 
       {limit !== null && (
         <Progress
-          value={monthlyBookings}
+          value={bookingsCount}
           max={limit}
-          aria-label="Agendamentos usados no mês"
+          aria-label="Agendamentos usados do plano"
           className="mt-2 bg-sidebar-item-active"
         />
       )}

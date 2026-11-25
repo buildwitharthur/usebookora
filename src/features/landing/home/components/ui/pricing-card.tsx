@@ -27,23 +27,33 @@ const pricingCard = tv({
   },
 });
 
+export type PricingCardCta = {
+  label: string;
+  href: string;
+};
+
 export type PricingCardProps = {
   plan: Plan;
+  /** Sufixo do preço nos planos pagos (ex.: "/mês") */
   periodLabel: string;
+  /** No lugar do preço quando o plano é gratuito (ex.: "Grátis") */
+  freeLabel: string;
+  /** Sufixo do preço quando o plano é gratuito (ex.: "sem cartão") */
+  freePeriodLabel: string;
   highlightLabel: string;
-  /** Texto do botão; `{plan}` é trocado pelo nome do plano */
-  ctaLabel: string;
-  ctaHref: string;
+  cta: PricingCardCta;
 };
 
 const PricingCard = ({
   plan,
   periodLabel,
+  freeLabel,
+  freePeriodLabel,
   highlightLabel,
-  ctaLabel,
-  ctaHref,
+  cta,
 }: PricingCardProps) => {
   const styles = pricingCard({ highlighted: plan.highlighted });
+  const isFree = plan.price === 0;
 
   return (
     <article className={styles.root()}>
@@ -56,11 +66,13 @@ const PricingCard = ({
       <h3 className={styles.name()}>{plan.name}</h3>
       <p className="mt-1 text-sm text-fg-secondary">{plan.description}</p>
 
-      <p className="mt-6 flex items-baseline gap-1">
+      <p className="mt-6 flex items-baseline gap-1.5">
         <span className="text-4xl font-bold tracking-tight tabular">
-          {formatCurrency(plan.price)}
+          {isFree ? freeLabel : formatCurrency(plan.price)}
         </span>
-        <span className="text-sm text-fg-muted">{periodLabel}</span>
+        <span className="text-sm text-fg-muted">
+          {isFree ? freePeriodLabel : periodLabel}
+        </span>
       </p>
 
       <Button
@@ -69,9 +81,7 @@ const PricingCard = ({
         size="lg"
         className="mt-6 w-full"
       >
-        <Link href={`${ctaHref}?plan=${plan.id}`}>
-          {ctaLabel.replace("{plan}", plan.name)}
-        </Link>
+        <Link href={cta.href}>{cta.label}</Link>
       </Button>
 
       <ul className="mt-8 space-y-3 border-t border-border pt-8">

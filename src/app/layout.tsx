@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   applicationName: siteName,
   keywords: [
     "agendamento online",
+    "agendamento online teste grátis",
+    "sistema de agendamento online",
     "agenda online",
     "agendamento para salão",
     "agendamento para barbearia",

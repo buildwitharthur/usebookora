@@ -16,9 +16,10 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 ## Acesso
 
 - Existe uma única página de acesso: `/login`.
-- Para usar o dashboard, o dono precisa de **conta** e de **plano ativo**. Sem plano, não acessa nada do dashboard.
-- Quando o plano expira, a página pública fica **desabilitada**.
-- Não há plano gratuito.
+- Toda conta nasce no plano **Basic**, que funciona como **teste grátis** (sem cartão).
+- Depois de assinar o **Pro** não existe downgrade: o Basic é só o ponto de partida.
+- Se a assinatura do Pro não for renovada, o **dashboard e a página pública ficam indisponíveis** até a renovação. A conta não volta para o Basic.
+- Assinar o Pro exige login: na landing, quem não está logado vai para o `/login`, e a assinatura é feita pelo menu da conta no dashboard.
 
 ## Página pública (`/{slug}`)
 
@@ -26,14 +27,14 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 - O estabelecimento escolhe a **cor** da página e a **imagem de perfil**.
 - Fluxo do cliente: escolhe o serviço, escolhe o horário, informa nome e telefone (e-mail opcional) e confirma. Depois vê uma **tela de agradecimento** com o resumo.
 - O cliente só enxerga **hoje e amanhã**. Dias além disso não aparecem.
-- Se o limite mensal do plano foi atingido, a página informa que não há horários disponíveis.
+- Se o limite de agendamentos do plano foi atingido, a página informa que não há horários disponíveis.
 
 ## Dashboard
 
 - **Agenda:** agendamentos de hoje e de amanhã, com cliente, telefone, serviço e horário. Somente visualização.
 - **Serviços:** criar, editar e excluir. Cada serviço tem nome, duração e preço. Excluir um serviço **apaga também os agendamentos dele**.
 - **Configurações:** dados do estabelecimento, slug, cor, imagem de perfil, dias da semana e horários de funcionamento.
-- **Plano:** plano atual, uso do mês, upgrade e downgrade.
+- **Plano:** plano atual e agendamentos usados na sidebar; upgrade e gerenciamento da assinatura no menu da conta.
 - **Compartilhar:** botão para copiar o link da página pública.
 
 ## Slots e conflitos
@@ -46,25 +47,24 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 
 ## Planos
 
-|                      | **Basic** | **Pro**    |
-| -------------------- | --------- | ---------- |
-| Serviços             | até 5     | ilimitados |
-| Agendamentos por mês | até 100   | ilimitados |
+|              | **Basic**       | **Pro**      |
+| ------------ | --------------- | ------------ |
+| Serviços     | até 5           | ilimitados   |
+| Agendamentos | até 100 (total) | ilimitados   |
+| Preço        | teste grátis    | R$ 49,90/mês |
 
 - No Basic, o 6º serviço é bloqueado com sugestão de upgrade.
-- A contagem de agendamentos reinicia todo mês. Ao chegar em 100, a página pública para de aceitar agendamentos até o mês seguinte ou um upgrade.
-- Para fazer downgrade de Pro para Basic com mais de 5 serviços, o dono precisa antes excluir serviços até restarem 5.
+- O limite de 100 agendamentos do Basic é **no total da conta** e não reinicia por mês. Ao chegar em 100, o teste acaba: a página pública para de aceitar agendamentos até a assinatura do Pro.
 
 ## Rotas
 
-| Rota                  | Acesso          | Descrição                                |
-| --------------------- | --------------- | ---------------------------------------- |
-| `/`                   | Público         | Landing page                             |
-| `/login`              | Público         | Entrada e criação de conta               |
-| `/{slug}`             | Público         | Página de agendamento do estabelecimento |
-| `/dashboard`          | Conta com plano | Agenda                                   |
-| `/dashboard/services` | Conta com plano | Serviços                                 |
-| `/dashboard/settings` | Conta com plano | Configurações                            |
-| `/dashboard/plan`     | Conta           | Plano e upgrade                          |
+| Rota                  | Acesso  | Descrição                                |
+| --------------------- | ------- | ---------------------------------------- |
+| `/`                   | Público | Landing page                             |
+| `/login`              | Público | Entrada e criação de conta               |
+| `/{slug}`             | Público | Página de agendamento do estabelecimento |
+| `/dashboard`          | Conta   | Agenda                                   |
+| `/dashboard/services` | Conta   | Serviços                                 |
+| `/dashboard/settings` | Conta   | Configurações                            |
 
 O slug é único e não pode coincidir com rotas do sistema (`login`, `dashboard`, `api` etc.).

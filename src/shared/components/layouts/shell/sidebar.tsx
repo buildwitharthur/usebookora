@@ -9,10 +9,10 @@ import UserMenu, { type ShellUser } from "./user-menu";
 type SidebarProps = {
   user: ShellUser;
   plan: Plan;
-  monthlyBookings: number;
+  bookingsCount: number;
 };
 
-const Sidebar = ({ user, plan, monthlyBookings }: SidebarProps) => {
+const Sidebar = ({ user, plan, bookingsCount }: SidebarProps) => {
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-fg">
       <div className="flex h-12 shrink-0 items-center px-4">
@@ -37,7 +37,7 @@ const Sidebar = ({ user, plan, monthlyBookings }: SidebarProps) => {
       </nav>
 
       <div className="px-2 pb-2">
-        <PlanUsage plan={plan} monthlyBookings={monthlyBookings} />
+        <PlanUsage plan={plan} bookingsCount={bookingsCount} />
       </div>
 
       <Separator className="bg-sidebar-border" />

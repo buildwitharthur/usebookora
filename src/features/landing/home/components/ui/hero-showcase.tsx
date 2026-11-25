@@ -144,7 +144,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
         </span>
       </div>
 
-      {/* Direita, em cima: uso do plano no mês */}
+      {/* Direita, em cima: uso do limite de agendamentos do plano */}
       <div className={cn(card, "top-12 -right-6")}>
         <p className={cardTitle}>{usage.title}</p>
         <p className="mt-3 flex items-baseline gap-1">

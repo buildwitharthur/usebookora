@@ -22,15 +22,16 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     image: sessionUser.image ?? null,
   };
 
-  // TODO: quando o model de agendamento existir, contar os do mês no banco
-  const monthlyBookings = 0;
+  // TODO: quando o model de agendamento existir, contar todos os do estabelecimento
+  // (o limite do Basic é no total, não reinicia por mês)
+  const bookingsCount = 0;
 
   return (
     <ShellLayout
       user={user}
       slug={establishment.slug}
       plan={plan}
-      monthlyBookings={monthlyBookings}
+      bookingsCount={bookingsCount}
     >
       {children}
     </ShellLayout>

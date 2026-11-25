@@ -4,12 +4,12 @@ export type Plan = {
   id: PlanId;
   name: string;
   description: string;
-  /** Preço mensal em centavos */
+  /** Preço mensal em centavos; `0` é o teste grátis (Basic) */
   price: number;
-  /** `null` significa ilimitado */
+  /** `null` significa ilimitado. `bookings` é o total da conta, não reinicia por mês */
   limits: {
     services: number | null;
-    monthlyBookings: number | null;
+    bookings: number | null;
   };
   features: string[];
   highlighted: boolean;
@@ -25,12 +25,13 @@ export const plans: Plan[] = [
   {
     id: "basic",
     name: "Basic",
-    description: "Para quem está começando a receber agendamentos online.",
-    price: 2990,
-    limits: { services: 5, monthlyBookings: 100 },
+    description:
+      "Teste grátis para receber seus primeiros agendamentos online.",
+    price: 0,
+    limits: { services: 5, bookings: 100 },
     features: [
       "Até 5 serviços",
-      "Até 100 agendamentos por mês",
+      "Até 100 agendamentos no total",
       ...commonFeatures,
     ],
     highlighted: false,
@@ -40,7 +41,7 @@ export const plans: Plan[] = [
     name: "Pro",
     description: "Para negócios com mais serviços e a agenda sempre cheia.",
     price: 4990,
-    limits: { services: null, monthlyBookings: null },
+    limits: { services: null, bookings: null },
     features: [
       "Serviços ilimitados",
       "Agendamentos ilimitados",

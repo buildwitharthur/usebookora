@@ -40,7 +40,7 @@ const LandingHeader = ({
           />
         </Link>
 
-        <nav aria-label={navLabel} className="hidden md:block">
+        <nav aria-label={navLabel} className="hidden lg:block">
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.href}>

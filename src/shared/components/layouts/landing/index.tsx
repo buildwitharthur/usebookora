@@ -8,7 +8,9 @@ type LandingLayoutProps = {
 
 const navLinks = [
   { label: "Como funciona", href: "#como-funciona" },
+  { label: "Para quem é", href: "#para-quem-e" },
   { label: "Planos", href: "#planos" },
+  { label: "Dúvidas", href: "#duvidas" },
 ];
 
 const LandingLayout = ({ children }: LandingLayoutProps) => {
@@ -19,7 +21,7 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
         navLabel="Navegação principal"
         navLinks={navLinks}
         secondaryCta={{ label: "Entrar", href: "/login" }}
-        primaryCta={{ label: "Criar conta", href: "/login" }}
+        primaryCta={{ label: "Testar grátis", href: "/login" }}
       />
 
       <main className="flex-1">{children}</main>
@@ -27,7 +29,7 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
       <LandingFooter
         homeLabel="Bookora, página inicial"
         navLabel="Links do rodapé"
-        tagline="Agendamentos simples para pequenos estabelecimentos."
+        tagline="Sistema de agendamento online para salões, barbearias, clínicas e autônomos."
         links={[...navLinks, { label: "Entrar", href: "/login" }]}
         copyright={`© ${new Date().getFullYear()} Bookora. Todos os direitos reservados.`}
       />
