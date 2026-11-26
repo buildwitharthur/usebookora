@@ -2,7 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 
-import { plans } from "@/shared/constants/plans";
+import { PLANS } from "@/shared/constants/plans";
 import { getSessionOrThrow } from "@/shared/guards/session/get-session-or-throw";
 import { prisma } from "@/shared/lib/prisma";
 
@@ -19,7 +19,7 @@ export const getCurrentPlan = cache(async () => {
     select: { planId: true },
   });
 
-  const plan = plans.find((plan) => plan.id === planId);
+  const plan = PLANS.find((plan) => plan.id === planId);
 
   if (!plan) {
     throw new Error(`Plan "${planId}" not found`);

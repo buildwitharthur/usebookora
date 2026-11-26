@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DashboardHomePage from "@/features/dashboard/home/components/pages";
+import AgendaPage from "@/features/dashboard/agenda/components/pages";
 
 export const metadata: Metadata = {
   title: "Agenda",
@@ -7,4 +7,4 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default DashboardHomePage;
+export default AgendaPage;

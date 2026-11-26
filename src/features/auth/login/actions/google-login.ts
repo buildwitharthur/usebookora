@@ -3,14 +3,9 @@
 import { AuthError } from "next-auth";
 
 import { signIn } from "@/shared/lib/auth";
+import type { GoogleLoginActionResult } from "../types/google-login-state";
 
-export type GoogleLoginState = {
-  success?: boolean;
-  url?: string;
-  error?: string;
-};
-
-export const googleLoginAction = async (): Promise<GoogleLoginState> => {
+export const googleLoginAction = async (): Promise<GoogleLoginActionResult> => {
   try {
     // `redirect: false`: devolve a URL de autorização do Google e a navegação fica no client
     const url: string = await signIn("google", {

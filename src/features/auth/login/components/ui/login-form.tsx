@@ -49,7 +49,7 @@ const LoginForm = () => {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
-            defaultValue={state.email}
+            defaultValue={state.values?.email}
             disabled={isAnyPending}
             aria-invalid={!!emailError}
             aria-describedby={emailError ? "email-error" : undefined}

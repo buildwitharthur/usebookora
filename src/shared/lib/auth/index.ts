@@ -5,7 +5,6 @@ import Resend from "next-auth/providers/resend";
 
 import { env } from "@/shared/lib/env";
 import { prisma } from "@/shared/lib/prisma";
-import { sendMagicLinkEmail } from "@/shared/utils/send-magic-link-email";
 
 const adapter = PrismaAdapter(prisma);
 
@@ -30,8 +29,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Resend({
       apiKey: env.AUTH_RESEND_KEY,
       from: env.EMAIL_FROM,
-      sendVerificationRequest: ({ identifier, url }) =>
-        sendMagicLinkEmail({ to: identifier, url }),
     }),
   ],
   pages: {

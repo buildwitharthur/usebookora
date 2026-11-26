@@ -31,7 +31,6 @@
     "next-auth": "5.0.0-beta.32",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "resend": "^6.39.0",
     "server-only": "^0.0.1",
     "slugify": "^1.6.9",
     "tailwind-merge": "^3.7.1",

@@ -1,24 +1,8 @@
 import { ArrowLeft, Clock, Inbox } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { Button } from "@/shared/components/ui/button";
 import EnvelopeIllustration from "../ui/envelope-illustration";
-
-type HintProps = {
-  icon: ReactNode;
-  children: ReactNode;
-};
-
-const Hint = ({ icon, children }: HintProps) => (
-  <li className="flex items-start gap-3">
-    <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-subtle text-fg-secondary">
-      {icon}
-    </span>
-    <p className="pt-1.5 text-sm leading-snug text-fg-secondary text-pretty">
-      {children}
-    </p>
-  </li>
-);
+import Hint from "../ui/hint";
 
 const VerifyRequestPage = () => {
   return (

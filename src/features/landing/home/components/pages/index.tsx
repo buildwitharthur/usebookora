@@ -1,4 +1,4 @@
-import { plans } from "@/shared/constants/plans";
+import { PLANS } from "@/shared/constants/plans";
 import Audiences from "../ui/audiences";
 import BeforeAfter from "../ui/before-after";
 import Faq from "../ui/faq";
@@ -63,7 +63,7 @@ const softwareJsonLd = JSON.stringify({
   operatingSystem: "Web",
   description:
     "Sistema de agendamento online para salões, barbearias, clínicas e autônomos.",
-  offers: plans.map((plan) => ({
+  offers: PLANS.map((plan) => ({
     "@type": "Offer",
     name: `Plano ${plan.name}`,
     price: (plan.price / 100).toFixed(2),
@@ -285,7 +285,7 @@ const HomePage = () => {
         eyebrow="Planos"
         title="Teste grátis e assine quando a agenda encher"
         description="O teste e o Pro têm a mesma página de agendamento e a mesma agenda. No Pro, os limites acabam."
-        plans={plans}
+        plans={PLANS}
         periodLabel="/mês"
         freeLabel="Grátis"
         freePeriodLabel="para testar"

@@ -23,7 +23,7 @@ export const DialogContent = ({
     <DialogPrimitive.Content
       data-slot="dialog-content"
       className={cn(
-        "fixed top-1/2 left-1/2 z-(--z-modal) flex w-[calc(100%-2rem)] max-w-narrow -translate-x-1/2 -translate-y-1/2 flex-col gap-5 rounded-xl border border-border bg-surface p-5 text-sm text-fg shadow-lg outline-none",
+        "fixed inset-x-4 top-1/2 z-(--z-modal) mx-auto flex max-w-narrow -translate-y-1/2 flex-col gap-5 rounded-xl border border-border bg-surface p-5 text-sm text-fg shadow-lg outline-none",
         className,
       )}
       {...props}

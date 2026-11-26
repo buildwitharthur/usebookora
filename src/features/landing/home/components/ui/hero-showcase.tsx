@@ -155,7 +155,7 @@ const HeroShowcase = ({ agenda, booking, usage, share }: HeroShowcaseProps) => {
         </p>
         <div className="mt-3 h-2 overflow-hidden rounded-full surface-inset">
           <div
-            className="h-full rounded-full bg-brand transition-[width] duration-(--duration-slower)"
+            className="h-full rounded-full bg-brand transition-width duration-(--duration-slower)"
             style={{ width: `${(usageCount / usage.limit) * 100}%` }}
           />
         </div>

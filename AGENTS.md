@@ -76,6 +76,7 @@ shared/
   guards/<contexto>/           guards de sessão e acesso
   lib/<nome>/index.ts          clientes e configuração (auth, prisma, env...)
   styles/globals.css           tokens e estilos globais
+  types/                       declarações globais de tipos (ex.: sessão do Auth.js)
   utils/                       funções puras globais
 ```
 
@@ -196,6 +197,7 @@ Toda página do dashboard tem uma entrada em `src/shared/components/layouts/shel
 
 - Só existem as classes dos tokens do projeto (`globals.css` substitui as cores, raios, sombras etc. padrão do Tailwind). Use os nomes semânticos: `bg-canvas`, `bg-surface`, `text-fg`, `text-fg-secondary`, `text-fg-muted`, `border-border`, `text-danger`, `size-icon-sm`, `h-control-md`...
 - Nunca use cores, tamanhos ou valores arbitrários fora dos tokens.
+- Estilo que os tokens não cobrem (gradiente, sombra composta, transição de uma propriedade) vira um `@utility` nomeado em `src/shared/styles/globals.css`, montado com as variáveis dos tokens (ex.: `bg-glow-hero`, `surface-raised`, `transition-width`).
 - Estilos com variantes ou partes (slots) usam `tv` do `tailwind-variants`. Classes condicionais usam `cn`.
 - Números alinhados (preço, duração, horário) usam a classe `tabular`.
 
@@ -491,7 +493,8 @@ export type CreateItemOutput = z.output<typeof createItemSchema>;
 - Assinatura: `(input: XInput) => Promise<XActionResult>`. A action **nunca** recebe `prevState` nem `FormData`: ler o form é trabalho do hook.
 - A action sempre valida com `safeParse(input)`. O tipo do input não vale no servidor: qualquer cliente pode chamar a action com qualquer valor.
 - O dono vem da sessão (`getCurrentEstablishmentOrThrow()` ou `getSessionOrThrow()`), nunca do input.
-- Nunca chame `redirect()` dentro de uma action (no Auth.js, `signIn`/`signOut` com `redirect: false`). A action retorna `{ success: true }` e o hook navega.
+- Nunca chame `redirect()` dentro de uma action. A action retorna `{ success: true }` e o hook navega.
+- Exceção: actions do Auth.js podem deixar o próprio `signIn`/`signOut` redirecionar pelo `redirectTo` (ex.: `signOutAction` em `shared/actions`). Quando o client precisa tratar o resultado antes de navegar (erro no form, URL externa), use `redirect: false` e navegue no hook.
 - Erros de campo em `fieldErrors` (`z.flattenError(parsed.error).fieldErrors`), erro geral em `error`.
 - A escrita no banco fica em `try/catch` com uma mensagem amigável.
 - Depois de mudar dados de uma listagem, chame `revalidatePath` da rota.

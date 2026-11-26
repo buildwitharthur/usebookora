@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { getNavItem } from "./nav-items";
+import { getNavItem } from "./get-nav-item";
 
 const PageTitle = () => {
   const pathname = usePathname();

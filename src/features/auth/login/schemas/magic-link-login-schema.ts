@@ -9,4 +9,5 @@ export const magicLinkLoginSchema = z.object({
     .pipe(z.email("Informe um e-mail válido.")),
 });
 
-export type MagicLinkLoginInput = z.infer<typeof magicLinkLoginSchema>;
+export type MagicLinkLoginInput = z.input<typeof magicLinkLoginSchema>;
+export type MagicLinkLoginOutput = z.output<typeof magicLinkLoginSchema>;

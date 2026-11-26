@@ -6,22 +6,27 @@ import { getCurrentEstablishment } from "@/shared/data-access/establishment/get-
 import { getSessionOrThrow } from "@/shared/guards/session/get-session-or-throw";
 import { prisma } from "@/shared/lib/prisma";
 import { generateSlug } from "@/shared/utils/generate-slug";
-import { getFormValues } from "@/shared/utils/get-form-values";
-import { createEstablishmentSchema } from "../schemas/create-establishment-schema";
+import {
+  type CreateEstablishmentInput,
+  type CreateEstablishmentOutput,
+  createEstablishmentSchema,
+} from "../schemas/create-establishment-schema";
+import type { EstablishmentActionResult } from "../types/establishment-form-state";
 
-export type CreateEstablishmentState = {
-  success?: boolean;
-  error?: string;
-  fieldErrors?: {
-    name?: string[];
-  };
-  name?: string;
-};
+// O slug é único entre todos os estabelecimentos, não só os do usuário
+const getEstablishmentBySlug = (slug: string) =>
+  prisma.establishment.findUnique({ where: { slug }, select: { id: true } });
+
+const createEstablishment = (
+  userId: string,
+  slug: string,
+  { name }: CreateEstablishmentOutput,
+) => prisma.establishment.create({ data: { name, slug, userId } });
 
 export const createEstablishmentAction = async (
-  _prevState: CreateEstablishmentState,
-  formData: FormData,
-): Promise<CreateEstablishmentState> => {
+  input: CreateEstablishmentInput,
+): Promise<EstablishmentActionResult> => {
+  // O dono vem da sessão, nunca do input
   const { user } = await getSessionOrThrow();
 
   // Um estabelecimento por usuário: quem já tem segue para o dashboard
@@ -29,41 +34,28 @@ export const createEstablishmentAction = async (
     return { success: true };
   }
 
-  const { name } = getFormValues(formData, ["name"]);
-
-  const parsed = createEstablishmentSchema.safeParse({ name });
+  // O tipo do input não vale no servidor: qualquer cliente pode chamar a action
+  const parsed = createEstablishmentSchema.safeParse(input);
 
   if (!parsed.success) {
-    return {
-      fieldErrors: z.flattenError(parsed.error).fieldErrors,
-      name,
-    };
+    return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
   const slug = generateSlug(parsed.data.name);
 
-  const slugTaken = await prisma.establishment.findUnique({
-    where: { slug },
-    select: { id: true },
-  });
-
-  if (slugTaken) {
+  if (await getEstablishmentBySlug(slug)) {
     return {
       fieldErrors: {
         name: ["Já existe um estabelecimento com esse nome. Tente outro."],
       },
-      name,
     };
   }
 
   try {
-    await prisma.establishment.create({
-      data: { name: parsed.data.name, slug, userId: user.id },
-    });
+    await createEstablishment(user.id, slug, parsed.data);
   } catch {
     return {
       error: "Não foi possível criar o estabelecimento. Tente novamente.",
-      name,
     };
   }
 

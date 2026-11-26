@@ -61,7 +61,7 @@ const Hero = ({
       {/* Fundo: gradiente suave na cor da marca */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,var(--color-brand-subtle),transparent_70%),linear-gradient(to_bottom,var(--color-canvas),color-mix(in_oklab,var(--color-brand-subtle)_50%,var(--color-canvas)))]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-glow-hero"
       />
 
       <div className="relative mx-auto max-w-352">

@@ -11,9 +11,9 @@ const ServicesEmpty = () => {
     >
       {/* Slots vazios: eco dos blocos de duração da tabela */}
       <span aria-hidden="true" className="flex gap-0.5">
-        <span className="h-3 w-1.5 rounded-[2px] bg-border-strong" />
-        <span className="h-3 w-1.5 rounded-[2px] bg-border-strong" />
-        <span className="h-3 w-1.5 rounded-[2px] bg-border-strong" />
+        <span className="h-3 w-1.5 rounded-sm bg-border-strong" />
+        <span className="h-3 w-1.5 rounded-sm bg-border-strong" />
+        <span className="h-3 w-1.5 rounded-sm bg-border-strong" />
       </span>
 
       <div className="flex flex-col gap-1">

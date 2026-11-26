@@ -34,7 +34,7 @@ export const SheetContent = ({
       data-slot="sheet-content"
       aria-describedby={undefined}
       className={cn(
-        "fixed inset-y-0 left-0 z-(--z-modal) flex w-64 max-w-[85vw] flex-col shadow-lg outline-none",
+        "fixed inset-y-0 left-0 z-(--z-modal) flex w-64 max-w-5/6 flex-col shadow-lg outline-none",
         className,
       )}
       {...props}

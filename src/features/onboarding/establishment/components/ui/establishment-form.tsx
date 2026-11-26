@@ -29,7 +29,7 @@ const EstablishmentForm = () => {
           type="text"
           autoComplete="organization"
           placeholder="Ex.: Barbearia Central"
-          defaultValue={state.name}
+          defaultValue={state.values?.name}
           disabled={isPending}
           aria-invalid={!!nameError}
           aria-describedby={nameError ? "name-error" : undefined}

@@ -459,6 +459,49 @@
   text-shadow: 0 1px 0 var(--color-surface);
 }
 
+/*
+ * Fundos com brilho suave na cor da marca, atrás do conteúdo:
+ *   bg-glow-hero       → topo da landing (brilho vem de cima)
+ *   bg-glow-onboarding → telas do onboarding (brilho atrás do conteúdo)
+ */
+@utility bg-glow-hero {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      var(--color-brand-subtle),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-canvas),
+      color-mix(in oklab, var(--color-brand-subtle) 50%, var(--color-canvas))
+    );
+}
+
+@utility bg-glow-onboarding {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 35%,
+      var(--color-brand-subtle),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-canvas),
+      color-mix(in oklab, var(--color-brand-subtle) 40%, var(--color-canvas))
+    );
+}
+
+/* Barras de progresso que crescem; aceita duration-* e ease-* como os transition-* do Tailwind */
+@utility transition-width {
+  transition-property: width;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function)
+  );
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;

@@ -21,7 +21,7 @@ const commonFeatures = [
   "Agenda de hoje e amanhã no dashboard",
 ];
 
-export const plans: Plan[] = [
+export const PLANS: Plan[] = [
   {
     id: "basic",
     name: "Basic",

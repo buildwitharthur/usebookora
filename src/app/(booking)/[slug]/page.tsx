@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getPublicEstablishmentBySlug } from "@/features/booking/public-page/data-access/get-public-establishment-by-slug";
 import BookingPage from "@/features/booking/public-page/components/pages";
 
 export const generateMetadata = async ({
@@ -6,9 +8,13 @@ export const generateMetadata = async ({
 }: PageProps<"/[slug]">): Promise<Metadata> => {
   const { slug } = await params;
 
-  // TODO: quando o model de estabelecimento existir, buscar nome, descrição
-  // e imagem de perfil pelo slug (e usar `notFound()` se não existir)
-  const name = slug;
+  const establishment = await getPublicEstablishmentBySlug(slug);
+
+  if (!establishment) {
+    notFound();
+  }
+
+  const { name } = establishment;
 
   return {
     title: `Agende em ${name}`,

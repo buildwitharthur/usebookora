@@ -4,31 +4,20 @@ import { AuthError } from "next-auth";
 import { z } from "zod";
 
 import { signIn } from "@/shared/lib/auth";
-import { getFormValues } from "@/shared/utils/get-form-values";
-import { magicLinkLoginSchema } from "../schemas/magic-link-login-schema";
-
-export type MagicLinkLoginState = {
-  success?: boolean;
-  error?: string;
-  fieldErrors?: {
-    email?: string[];
-  };
-  email?: string;
-};
+import {
+  type MagicLinkLoginInput,
+  magicLinkLoginSchema,
+} from "../schemas/magic-link-login-schema";
+import type { MagicLinkLoginActionResult } from "../types/magic-link-login-state";
 
 export const magicLinkLoginAction = async (
-  _prevState: MagicLinkLoginState,
-  formData: FormData,
-): Promise<MagicLinkLoginState> => {
-  const { email } = getFormValues(formData, ["email"]);
-
-  const parsed = magicLinkLoginSchema.safeParse({ email });
+  input: MagicLinkLoginInput,
+): Promise<MagicLinkLoginActionResult> => {
+  // O tipo do input não vale no servidor: qualquer cliente pode chamar a action
+  const parsed = magicLinkLoginSchema.safeParse(input);
 
   if (!parsed.success) {
-    return {
-      fieldErrors: z.flattenError(parsed.error).fieldErrors,
-      email,
-    };
+    return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
   try {
@@ -42,7 +31,6 @@ export const magicLinkLoginAction = async (
     if (error instanceof AuthError) {
       return {
         error: "Não foi possível enviar o link de acesso. Tente novamente.",
-        email,
       };
     }
 

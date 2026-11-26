@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { isNavItemActive, navItems } from "./nav-items";
+import { isNavItemActive } from "./is-nav-item-active";
+import { NAV_ITEMS } from "./nav-items";
 
 const SidebarNav = () => {
   const pathname = usePathname();
 
   return (
     <ul className="flex flex-col gap-0.5">
-      {navItems.map(({ href, label, icon: Icon }) => {
+      {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
         const active = isNavItemActive(pathname, href);
 
         return (

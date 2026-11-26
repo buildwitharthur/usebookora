@@ -62,13 +62,13 @@ Cada `page.tsx` só define o título da página e aponta para a tela corresponde
 
 Uma pasta por área, e dentro dela uma pasta por módulo (tela ou conjunto de telas):
 
-| Área         | Módulos                                  |
-| ------------ | ---------------------------------------- |
-| `landing`    | `home`                                   |
-| `auth`       | `login`, `verify-request`, `error`       |
-| `booking`    | `public-page`                            |
-| `onboarding` | `home`, `establishment`                  |
-| `dashboard`  | `home`, `agenda`, `services`, `settings` |
+| Área         | Módulos                            |
+| ------------ | ---------------------------------- |
+| `landing`    | `home`                             |
+| `auth`       | `login`, `verify-request`, `error` |
+| `booking`    | `public-page`                      |
+| `onboarding` | `home`, `establishment`            |
+| `dashboard`  | `agenda`, `services`, `settings`   |
 
 Cada módulo separa o código por papel:
 
@@ -85,17 +85,18 @@ Cada módulo separa o código por papel:
 
 ### `src/shared`: código comum
 
-| Pasta                | O que tem                                                        |
-| -------------------- | ---------------------------------------------------------------- |
-| `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...        |
-| `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking |
-| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano  |
-| `guards`             | proteção de acesso: exige login, exige estabelecimento...        |
-| `actions`            | ações usadas em vários lugares (ex.: sair)                       |
-| `lib`                | configuração de serviços: auth, banco, e-mail, pagamentos, env   |
-| `constants`          | valores globais: planos, tamanho dos slots                       |
-| `utils`              | funções de formatação e utilitários                              |
-| `styles`             | estilos globais e tokens de design                               |
+| Pasta                | O que tem                                                           |
+| -------------------- | ------------------------------------------------------------------- |
+| `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...           |
+| `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking    |
+| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano     |
+| `guards`             | proteção de acesso: exige login, exige estabelecimento...           |
+| `actions`            | ações usadas em vários lugares (ex.: sair)                          |
+| `lib`                | configuração de serviços: auth (com o login por e-mail), banco, env |
+| `constants`          | valores globais: planos, tamanho dos slots                          |
+| `types`              | declarações globais de tipos (ex.: sessão do Auth.js)               |
+| `utils`              | funções de formatação e utilitários                                 |
+| `styles`             | estilos globais e tokens de design                                  |
 
 ## Documentação
 

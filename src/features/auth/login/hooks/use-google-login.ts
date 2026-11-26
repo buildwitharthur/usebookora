@@ -2,18 +2,16 @@
 
 import { useActionState, useEffect } from "react";
 
-import {
-  googleLoginAction,
-  type GoogleLoginState,
-} from "../actions/google-login";
+import { googleLoginAction } from "../actions/google-login";
+import type { GoogleLoginActionResult } from "../types/google-login-state";
 
-const initialState: GoogleLoginState = {};
+const initialState: GoogleLoginActionResult = {};
 
 export const useGoogleLogin = () => {
-  const [state, formAction, isPending] = useActionState(
-    googleLoginAction,
-    initialState,
-  );
+  /** O form só tem o botão: não há campos para ler */
+  const onSubmit = () => googleLoginAction();
+
+  const [state, formAction, isPending] = useActionState(onSubmit, initialState);
 
   useEffect(() => {
     // URL externa (Google): navegação completa, não `router.push`

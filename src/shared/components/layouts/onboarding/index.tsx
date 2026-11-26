@@ -1,18 +1,12 @@
 import { LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { signOutAction } from "@/shared/actions/sign-out";
 import { Button } from "@/shared/components/ui/button";
-import { signOut } from "@/shared/lib/auth";
 import StorefrontIllustration from "./storefront-illustration";
 
 type OnboardingLayoutProps = {
   children: React.ReactNode;
-};
-
-const signOutAction = async () => {
-  "use server";
-
-  await signOut({ redirectTo: "/login" });
 };
 
 const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
@@ -21,7 +15,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
       {/* Fundo: gradiente suave na cor da marca */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_55%_at_50%_35%,var(--color-brand-subtle),transparent_70%),linear-gradient(to_bottom,var(--color-canvas),color-mix(in_oklab,var(--color-brand-subtle)_40%,var(--color-canvas)))]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-glow-onboarding"
       />
 
       <header className="mx-auto flex h-16 w-full max-w-wide items-center justify-between gap-4 px-4 sm:px-6">

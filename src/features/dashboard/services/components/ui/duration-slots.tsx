@@ -13,7 +13,7 @@ const DurationSlots = ({ minutes, className }: DurationSlotsProps) => {
   return (
     <span aria-hidden="true" className={cn("flex gap-0.5", className)}>
       {Array.from({ length: slots }, (_, index) => (
-        <span key={index} className="h-3 w-1.5 rounded-[2px] bg-brand" />
+        <span key={index} className="h-3 w-1.5 rounded-sm bg-brand" />
       ))}
     </span>
   );
