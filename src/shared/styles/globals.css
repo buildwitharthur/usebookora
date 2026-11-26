@@ -217,6 +217,28 @@
   /* Ícones de carregamento (LoaderCircle) */
   --animate-spin: spin 1s var(--ease-linear) infinite;
 
+  /* Cadeado da página de erro do login: treme uma vez ao entrar (usar com motion-safe:) */
+  --animate-lock-shake: lock-shake 560ms var(--ease-standard) 240ms both;
+
+  @keyframes lock-shake {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    20% {
+      transform: rotate(-7deg);
+    }
+    40% {
+      transform: rotate(5deg);
+    }
+    60% {
+      transform: rotate(-3deg);
+    }
+    80% {
+      transform: rotate(1.5deg);
+    }
+  }
+
   @keyframes spin {
     to {
       transform: rotate(360deg);
