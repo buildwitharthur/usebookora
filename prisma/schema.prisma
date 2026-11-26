@@ -139,9 +139,12 @@ model Establishment {
   // Usuário do Instagram, sem o @
   instagram   String?
   brandColor  BrandColor @default(indigo)
+  // Fuso IANA, um dos fusos do Brasil: define o que é "hoje" e "amanhã" na agenda
+  timeZone    String     @default("America/Sao_Paulo")
 
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   services Service[]
+  bookings Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,10 +162,35 @@ model Service {
   priceCents      Int
 
   establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  bookings      Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([establishmentId, name])
   @@map("services")
+}
+
+model Booking {
+  id              String   @id @default(cuid())
+  establishmentId String
+  serviceId       String
+  clientName      String
+  // Só dígitos, com DDD (10 ou 11)
+  clientPhone     String
+  clientEmail     String?
+  // Fim guardado no agendamento: mudar a duração do serviço depois não altera o que já foi marcado
+  startsAt        DateTime
+  endsAt          DateTime
+
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  // Excluir um serviço apaga também os agendamentos dele (spec)
+  service       Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([establishmentId, startsAt])
+  @@index([serviceId])
+  @@map("bookings")
 }
