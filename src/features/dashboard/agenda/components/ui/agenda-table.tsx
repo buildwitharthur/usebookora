@@ -1,7 +1,7 @@
 import { cn } from "@/shared/utils/cn";
 import { formatPhone } from "@/shared/utils/format-phone";
+import { formatTime } from "@/shared/utils/format-time";
 import type { AgendaBooking } from "../../data-access/get-agenda";
-import { formatTime } from "../../utils/format-time";
 import AgendaTableHead, { agendaTable } from "./agenda-table-head";
 
 type AgendaTableProps = {

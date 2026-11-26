@@ -27,7 +27,10 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 - O estabelecimento escolhe a **cor** da página e a **imagem de perfil**. A cor é uma de 8 opções fixas (índigo, azul, turquesa, verde, laranja, rosa, roxo e grafite); o padrão é índigo.
 - A página tem um header com o logo do Bookora e um rodapé com o selo "Agendamento online por Bookora", nas cores do Bookora (não na cor do estabelecimento). Os dois aparecem em **todos os planos**, inclusive no Pro, e levam à landing em uma nova aba.
 - Fluxo do cliente: escolhe o serviço (que leva a `/{slug}/{serviceId}`), escolhe o horário, informa nome e telefone (e-mail opcional) e confirma. Depois vê uma **tela de agradecimento** com o resumo.
+  - A escolha do horário e os dados ficam na mesma tela. Os dados só ficam liberados depois de escolher um horário.
+  - O agradecimento aparece no lugar do form, sem rota própria: o resumo não fica exposto em nenhum link.
 - O cliente só enxerga **hoje e amanhã**. Dias além disso não aparecem.
+- Todos os horários do expediente de cada dia aparecem. Os indisponíveis (já passaram, já estão ocupados ou o serviço não cabe antes do fechamento) aparecem **desabilitados**. Dia fechado aparece como fechado.
 - Se o limite de agendamentos do plano foi atingido, a página informa que não há horários disponíveis.
 
 ## Dashboard
@@ -37,6 +40,7 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 - **Configurações:** dados do estabelecimento (nome, descrição, endereço, telefone e Instagram), slug, cor, imagem de perfil, fuso horário, dias da semana e horários de funcionamento.
   - Só o nome é obrigatório. O telefone tem DDD; o Instagram é o nome de usuário, sem o @.
   - O slug pode ser trocado; o link antigo deixa de funcionar.
+  - Horário de funcionamento: cada dia da semana está aberto, com um intervalo (abre e fecha, de 30 em 30 minutos, de 00:00 até 24:00), ou fechado. Todo estabelecimento nasce em horário comercial: segunda a sexta, das 09:00 às 18:00.
   - O fuso horário é um dos 4 fusos oficiais do Brasil; o padrão é o de Brasília. Ele define o que é "hoje" e "amanhã" na agenda e na página pública.
 - **Plano:** plano atual e agendamentos usados na sidebar; upgrade e gerenciamento da assinatura no menu da conta.
 - **Compartilhar:** botão para copiar o link da página pública.

@@ -142,14 +142,36 @@ model Establishment {
   // Fuso IANA, um dos fusos do Brasil: define o que é "hoje" e "amanhã" na agenda
   timeZone    String     @default("America/Sao_Paulo")
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  services Service[]
-  bookings Booking[]
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services     Service[]
+  bookings     Booking[]
+  openingHours OpeningHours[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("establishments")
+}
+
+// Um intervalo por dia da semana; dia sem registro está fechado. Todo
+// estabelecimento nasce em horário comercial (DEFAULT_OPENING_HOURS)
+model OpeningHours {
+  id              String @id @default(cuid())
+  establishmentId String
+  // 0 = domingo ... 6 = sábado, como Date.getDay()
+  weekday         Int
+  // Minutos desde 00:00, múltiplos de 30 (tamanho do slot); fecha depois de abrir.
+  // closesAt vai até 1440 (24:00) para o último slot poder começar às 23:30
+  opensAt         Int
+  closesAt        Int
+
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([establishmentId, weekday])
+  @@map("opening_hours")
 }
 
 model Service {

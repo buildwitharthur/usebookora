@@ -1,6 +1,7 @@
-import type { ComponentProps, CSSProperties } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 import type { BrandColor } from "@/generated/prisma/enums";
+import { getBrandStyle } from "@/shared/utils/get-brand-style";
 
 /** Estilos compartilhados pela página e pelo skeleton, para não haver salto ao carregar */
 export const establishmentShell = tv({
@@ -25,17 +26,10 @@ const EstablishmentShell = ({
   className,
   ...props
 }: EstablishmentShellProps) => {
-  // A cor vem do enum, então a variável do preset sempre existe em globals.css
-  const brandStyle = brandColor
-    ? ({
-        "--color-brand": `var(--color-preset-${brandColor})`,
-      } as CSSProperties)
-    : undefined;
-
   return (
     <div
       data-brand={brandColor}
-      style={brandStyle}
+      style={brandColor ? getBrandStyle(brandColor) : undefined}
       className={styles.root({ class: className })}
       {...props}
     />

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 
+import { DEFAULT_OPENING_HOURS } from "@/shared/constants/default-opening-hours";
 import { getCurrentEstablishment } from "@/shared/data-access/establishment/get-current-establishment";
 import { getSessionOrThrow } from "@/shared/guards/session/get-session-or-throw";
 import { prisma } from "@/shared/lib/prisma";
@@ -17,11 +18,20 @@ import type { EstablishmentActionResult } from "../types/establishment-form-stat
 const getEstablishmentBySlug = (slug: string) =>
   prisma.establishment.findUnique({ where: { slug }, select: { id: true } });
 
+// Já nasce em horário comercial: o dono só ajusta nas Configurações
 const createEstablishment = (
   userId: string,
   slug: string,
   { name }: CreateEstablishmentOutput,
-) => prisma.establishment.create({ data: { name, slug, userId } });
+) =>
+  prisma.establishment.create({
+    data: {
+      name,
+      slug,
+      userId,
+      openingHours: { createMany: { data: DEFAULT_OPENING_HOURS } },
+    },
+  });
 
 export const createEstablishmentAction = async (
   input: CreateEstablishmentInput,

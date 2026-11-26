@@ -495,6 +495,7 @@ export type CreateItemOutput = z.output<typeof createItemSchema>;
 - Assinatura: `(input: XInput) => Promise<XActionResult>`. A action **nunca** recebe `prevState` nem `FormData`: ler o form é trabalho do hook.
 - A action sempre valida com `safeParse(input)`. O tipo do input não vale no servidor: qualquer cliente pode chamar a action com qualquer valor.
 - O dono vem da sessão (`getCurrentEstablishmentOrThrow()` ou `getSessionOrThrow()`), nunca do input.
+- Exceção: actions públicas, chamadas por quem não tem conta (ex.: `createBookingAction` em `features/booking/schedule`). O estabelecimento vem do slug, por uma DAL pública, e tudo o que o input afirma (ex.: o horário estar livre) é conferido de novo no servidor.
 - Nunca chame `redirect()` dentro de uma action. A action retorna `{ success: true }` e o hook navega.
 - Exceção: actions do Auth.js podem deixar o próprio `signIn`/`signOut` redirecionar pelo `redirectTo` (ex.: `signOutAction` em `shared/actions`). Quando o client precisa tratar o resultado antes de navegar (erro no form, URL externa), use `redirect: false` e navegue no hook.
 - Erros de campo em `fieldErrors` (`z.flattenError(parsed.error).fieldErrors`), erro geral em `error`.

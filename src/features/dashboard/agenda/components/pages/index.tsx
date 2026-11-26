@@ -3,7 +3,7 @@ import { AGENDA_DAYS } from "../../constants/agenda-days";
 import AgendaDayData from "../ui/agenda-day-data";
 import AgendaTableSkeleton from "../ui/agenda-table-skeleton";
 
-const  AgendaPage = () => {
+const AgendaPage = () => {
   return (
     <div className="flex flex-col gap-6">
       <header>

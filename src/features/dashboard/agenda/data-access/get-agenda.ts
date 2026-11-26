@@ -4,8 +4,8 @@ import { cache } from "react";
 
 import { getCurrentEstablishmentOrThrow } from "@/shared/data-access/establishment/get-current-establishment-or-throw";
 import { prisma } from "@/shared/lib/prisma";
-import { addDaysToDateKey } from "../utils/add-days-to-date-key";
-import { getDateKey } from "../utils/get-date-key";
+import { addDaysToDateKey } from "@/shared/utils/add-days-to-date-key";
+import { getDateKey } from "@/shared/utils/get-date-key";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

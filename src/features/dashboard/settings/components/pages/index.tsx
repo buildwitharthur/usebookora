@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import EstablishmentData from "../ui/establishment-data";
 import EstablishmentFormSkeleton from "../ui/establishment-form-skeleton";
+import OpeningHoursData from "../ui/opening-hours-data";
+import OpeningHoursFormSkeleton from "../ui/opening-hours-form-skeleton";
 
 const SettingsPage = () => {
   return (
@@ -13,6 +15,10 @@ const SettingsPage = () => {
 
       <Suspense fallback={<EstablishmentFormSkeleton />}>
         <EstablishmentData />
+      </Suspense>
+
+      <Suspense fallback={<OpeningHoursFormSkeleton />}>
+        <OpeningHoursData />
       </Suspense>
     </div>
   );
