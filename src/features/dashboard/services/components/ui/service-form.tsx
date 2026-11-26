@@ -39,8 +39,6 @@ const ServiceForm = ({ service, onSuccess }: ServiceFormProps) => {
 
   return (
     <form action={formAction} className="flex flex-col gap-4" noValidate>
-      {service && <input type="hidden" name="id" value={service.id} />}
-
       {formError && (
         <p
           role="alert"

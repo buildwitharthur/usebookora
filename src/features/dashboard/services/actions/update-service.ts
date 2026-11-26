@@ -5,22 +5,40 @@ import { z } from "zod";
 
 import { getCurrentEstablishmentOrThrow } from "@/shared/data-access/establishment/get-current-establishment-or-throw";
 import { prisma } from "@/shared/lib/prisma";
-import { getFormValues } from "@/shared/utils/get-form-values";
-import { SERVICE_FORM_FIELDS } from "../constants/service-form-fields";
-import { updateServiceSchema } from "../schemas/update-service-schema";
-import type { ServiceFormState } from "../types/service-form-state";
+import { getServiceById } from "../data-access/get-service-by-id";
+import { getServiceByName } from "../data-access/get-service-by-name";
+import {
+  type UpdateServiceInput,
+  type UpdateServiceOutput,
+  updateServiceSchema,
+} from "../schemas/update-service-schema";
+import type { ServiceActionResult } from "../types/service-form-state";
 
 const notFoundError = "Serviço não encontrado. Atualize a página.";
 
+/** O próprio serviço pode manter o nome */
+const isNameTakenByAnotherService = async (id: string, name: string) => {
+  const serviceWithName = await getServiceByName(name);
+
+  return !!serviceWithName && serviceWithName.id !== id;
+};
+
+const updateService = (
+  establishmentId: string,
+  { id, name, durationMinutes, price }: UpdateServiceOutput,
+) =>
+  prisma.service.update({
+    where: { id, establishmentId },
+    data: { name, durationMinutes, priceCents: price },
+  });
+
 export const updateServiceAction = async (
-  _prevState: ServiceFormState,
-  formData: FormData,
-): Promise<ServiceFormState> => {
+  input: UpdateServiceInput,
+): Promise<ServiceActionResult> => {
   const establishment = await getCurrentEstablishmentOrThrow();
 
-  const values = getFormValues(formData, SERVICE_FORM_FIELDS);
-  const { id: rawId } = getFormValues(formData, ["id"]);
-  const parsed = updateServiceSchema.safeParse({ ...values, id: rawId });
+  // O tipo do input não vale no servidor: qualquer cliente pode chamar a action
+  const parsed = updateServiceSchema.safeParse(input);
 
   if (!parsed.success) {
     const { id: idErrors, ...fieldErrors } = z.flattenError(
@@ -30,47 +48,25 @@ export const updateServiceAction = async (
     return {
       error: idErrors ? notFoundError : undefined,
       fieldErrors,
-      values,
     };
   }
 
-  const { id, name, durationMinutes, price } = parsed.data;
+  const { id, name } = parsed.data;
 
-  // Só encontra serviços do estabelecimento do usuário logado
-  const service = await prisma.service.findUnique({
-    where: { id, establishmentId: establishment.id },
-    select: { id: true },
-  });
+  const service = await getServiceById(id);
 
   if (!service) {
-    return { error: notFoundError, values };
+    return { error: notFoundError };
   }
 
-  const serviceWithName = await prisma.service.findUnique({
-    where: {
-      establishmentId_name: { establishmentId: establishment.id, name },
-    },
-    select: { id: true },
-  });
-
-  // O próprio serviço pode manter o nome
-  if (serviceWithName && serviceWithName.id !== id) {
-    return {
-      fieldErrors: { name: ["Já existe um serviço com esse nome."] },
-      values,
-    };
+  if (await isNameTakenByAnotherService(id, name)) {
+    return { fieldErrors: { name: ["Já existe um serviço com esse nome."] } };
   }
 
   try {
-    await prisma.service.update({
-      where: { id, establishmentId: establishment.id },
-      data: { name, durationMinutes, priceCents: price },
-    });
+    await updateService(establishment.id, parsed.data);
   } catch {
-    return {
-      error: "Não foi possível salvar o serviço. Tente novamente.",
-      values,
-    };
+    return { error: "Não foi possível salvar o serviço. Tente novamente." };
   }
 
   revalidatePath("/dashboard/services");

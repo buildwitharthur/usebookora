@@ -2,8 +2,10 @@
 
 import { useActionState, useEffect, useEffectEvent } from "react";
 
+import { getFormValues } from "@/shared/utils/get-form-values";
 import { createServiceAction } from "../actions/create-service";
 import { updateServiceAction } from "../actions/update-service";
+import { SERVICE_FORM_FIELDS } from "../constants/service-form-fields";
 import type { ServiceListItem } from "../data-access/get-services";
 import type { ServiceFormState } from "../types/service-form-state";
 
@@ -19,10 +21,25 @@ export const useServiceForm = ({
   service,
   onSuccess,
 }: UseServiceFormParams) => {
-  // O form é montado de novo a cada abertura do dialog, então a action
-  // escolhida aqui não muda durante a vida do hook
-  const action = service ? updateServiceAction : createServiceAction;
-  const [state, formAction, isPending] = useActionState(action, initialState);
+  /** Lê o form e repassa o input tipado para a action de criar ou editar */
+  const onSubmit = async (
+    _prevState: ServiceFormState,
+    formData: FormData,
+  ): Promise<ServiceFormState> => {
+    const values = getFormValues(formData, SERVICE_FORM_FIELDS);
+
+    const result = service
+      ? await updateServiceAction({ ...values, id: service.id })
+      : await createServiceAction(values);
+
+    // O React limpa o form depois do submit: guarda o que foi enviado para repreencher
+    return result.success ? result : { ...result, values };
+  };
+
+  const [state, formAction, isPending] = useActionState(
+    onSubmit,
+    initialState,
+  );
 
   const handleSuccess = useEffectEvent(onSuccess);
 

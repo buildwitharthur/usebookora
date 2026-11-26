@@ -2,20 +2,25 @@
 
 import { useActionState, useEffect, useEffectEvent } from "react";
 
-import {
-  deleteServiceAction,
-  type DeleteServiceState,
-} from "../actions/delete-service";
+import { deleteServiceAction } from "../actions/delete-service";
+import type { DeleteServiceActionResult } from "../types/delete-service-state";
 
-const initialState: DeleteServiceState = {};
+const initialState: DeleteServiceActionResult = {};
 
 type UseDeleteServiceParams = {
+  serviceId: string;
   onSuccess: () => void;
 };
 
-export const useDeleteService = ({ onSuccess }: UseDeleteServiceParams) => {
+export const useDeleteService = ({
+  serviceId,
+  onSuccess,
+}: UseDeleteServiceParams) => {
+  /** O form só confirma: o id vem da prop, não de um campo */
+  const onSubmit = () => deleteServiceAction({ id: serviceId });
+
   const [state, formAction, isPending] = useActionState(
-    deleteServiceAction,
+    onSubmit,
     initialState,
   );
 

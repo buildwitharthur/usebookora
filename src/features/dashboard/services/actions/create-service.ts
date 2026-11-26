@@ -7,26 +7,20 @@ import type { Plan } from "@/shared/constants/plans";
 import { getCurrentEstablishmentOrThrow } from "@/shared/data-access/establishment/get-current-establishment-or-throw";
 import { getCurrentPlan } from "@/shared/data-access/subscription/get-current-plan";
 import { prisma } from "@/shared/lib/prisma";
-import { getFormValues } from "@/shared/utils/get-form-values";
-import { SERVICE_FORM_FIELDS } from "../constants/service-form-fields";
-import { createServiceSchema } from "../schemas/create-service-schema";
-import type { ServiceFormState } from "../types/service-form-state";
-
-type CreateServiceInput = z.infer<typeof createServiceSchema>;
+import { getServiceByName } from "../data-access/get-service-by-name";
+import {
+  type CreateServiceInput,
+  type CreateServiceOutput,
+  createServiceSchema,
+} from "../schemas/create-service-schema";
+import type { ServiceActionResult } from "../types/service-form-state";
 
 const countServices = (establishmentId: string) =>
   prisma.service.count({ where: { establishmentId } });
 
-// citext: a comparação ignora maiúsculas/minúsculas
-const findServiceByName = (establishmentId: string, name: string) =>
-  prisma.service.findUnique({
-    where: { establishmentId_name: { establishmentId, name } },
-    select: { id: true },
-  });
-
 const createService = (
   establishmentId: string,
-  { name, durationMinutes, price }: CreateServiceInput,
+  { name, durationMinutes, price }: CreateServiceOutput,
 ) =>
   prisma.service.create({
     data: { establishmentId, name, durationMinutes, priceCents: price },
@@ -40,13 +34,10 @@ const canCreateService = (plan: Plan, servicesCount: number) => {
 };
 
 export const createServiceAction = async (
-  _prevState: ServiceFormState,
-  formData: FormData,
-): Promise<ServiceFormState> => {
-  // O estabelecimento vem da sessão, nunca do form
+  input: CreateServiceInput,
+): Promise<ServiceActionResult> => {
+  // O estabelecimento vem da sessão, nunca do input
   const establishment = await getCurrentEstablishmentOrThrow();
-
-  const values = getFormValues(formData, SERVICE_FORM_FIELDS);
 
   const [plan, servicesCount] = await Promise.all([
     getCurrentPlan(),
@@ -54,37 +45,26 @@ export const createServiceAction = async (
   ]);
 
   if (!canCreateService(plan, servicesCount)) {
-    return {
-      error: "Você atingiu o limite de serviços do seu plano.",
-      values,
-    };
+    return { error: "Você atingiu o limite de serviços do seu plano." };
   }
 
-  const parsed = createServiceSchema.safeParse(values);
+  // O tipo do input não vale no servidor: qualquer cliente pode chamar a action
+  const parsed = createServiceSchema.safeParse(input);
 
   if (!parsed.success) {
-    return {
-      fieldErrors: z.flattenError(parsed.error).fieldErrors,
-      values,
-    };
+    return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
-  const nameTaken = await findServiceByName(establishment.id, parsed.data.name);
+  const nameTaken = await getServiceByName(parsed.data.name);
 
   if (nameTaken) {
-    return {
-      fieldErrors: { name: ["Já existe um serviço com esse nome."] },
-      values,
-    };
+    return { fieldErrors: { name: ["Já existe um serviço com esse nome."] } };
   }
 
   try {
     await createService(establishment.id, parsed.data);
   } catch {
-    return {
-      error: "Não foi possível criar o serviço. Tente novamente.",
-      values,
-    };
+    return { error: "Não foi possível criar o serviço. Tente novamente." };
   }
 
   revalidatePath("/dashboard/services");

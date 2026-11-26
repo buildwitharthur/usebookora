@@ -17,12 +17,13 @@ const DeleteServiceForm = ({
   serviceId,
   onSuccess,
 }: DeleteServiceFormProps) => {
-  const { formAction, isPending, formError } = useDeleteService({ onSuccess });
+  const { formAction, isPending, formError } = useDeleteService({
+    serviceId,
+    onSuccess,
+  });
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      <input type="hidden" name="id" value={serviceId} />
-
       {formError && (
         <p
           role="alert"
