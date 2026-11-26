@@ -25,7 +25,8 @@ adapter.createUser = ({ name, email, emailVerified, image }) =>
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter,
   providers: [
-    Google,
+    // O Google verifica o e-mail, então é seguro vincular a uma conta criada por magic link
+    Google({ allowDangerousEmailAccountLinking: true }),
     Resend({
       apiKey: env.AUTH_RESEND_KEY,
       from: env.EMAIL_FROM,

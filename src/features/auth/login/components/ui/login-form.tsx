@@ -4,16 +4,35 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { useGoogleLogin } from "../../hooks/use-google-login";
 import { useMagicLinkLogin } from "../../hooks/use-magic-link-login";
 import GoogleLoginButton from "./google-login-button";
 
 const LoginForm = () => {
   const { state, formAction, isPending, emailError, formError } =
     useMagicLinkLogin();
+  const google = useGoogleLogin();
+
+  // Um fluxo em andamento bloqueia o outro
+  const isAnyPending = isPending || google.isPending;
+  const error = google.error ?? formError;
 
   return (
     <div className="flex flex-col gap-5">
-      <GoogleLoginButton disabled={isPending} />
+      {error && (
+        <p
+          role="alert"
+          className="rounded-md border border-danger-border bg-danger-bg px-3 py-2 text-sm text-danger-fg"
+        >
+          {error}
+        </p>
+      )}
+
+      <GoogleLoginButton
+        formAction={google.formAction}
+        isPending={google.isPending}
+        disabled={isPending}
+      />
 
       <div className="flex items-center gap-3">
         <span aria-hidden="true" className="h-px flex-1 bg-border" />
@@ -22,15 +41,6 @@ const LoginForm = () => {
       </div>
 
       <form action={formAction} className="flex flex-col gap-3" noValidate>
-        {formError && (
-          <p
-            role="alert"
-            className="rounded-md border border-danger-border bg-danger-bg px-3 py-2 text-sm text-danger-fg"
-          >
-            {formError}
-          </p>
-        )}
-
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="email">E-mail</Label>
           <Input
@@ -40,7 +50,7 @@ const LoginForm = () => {
             autoComplete="email"
             placeholder="voce@exemplo.com"
             defaultValue={state.email}
-            disabled={isPending}
+            disabled={isAnyPending}
             aria-invalid={!!emailError}
             aria-describedby={emailError ? "email-error" : undefined}
             required
@@ -52,7 +62,7 @@ const LoginForm = () => {
           )}
         </div>
 
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button type="submit" className="w-full" disabled={isAnyPending}>
           {isPending ? (
             <>
               <LoaderCircle

@@ -1,5 +1,6 @@
 "use client";
 
+import { LoaderCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 const GoogleIcon = () => (
@@ -24,21 +25,40 @@ const GoogleIcon = () => (
 );
 
 type GoogleLoginButtonProps = {
+  formAction: () => void;
+  isPending: boolean;
   disabled?: boolean;
 };
 
-const GoogleLoginButton = ({ disabled }: GoogleLoginButtonProps) => {
-  // TODO: ligar ao signIn("google")
+const GoogleLoginButton = ({
+  formAction,
+  isPending,
+  disabled,
+}: GoogleLoginButtonProps) => {
   return (
-    <Button
-      type="button"
-      variant="secondary"
-      className="w-full"
-      disabled={disabled}
-    >
-      <GoogleIcon />
-      Entrar com Google
-    </Button>
+    <form action={formAction}>
+      <Button
+        type="submit"
+        variant="secondary"
+        className="w-full"
+        disabled={disabled || isPending}
+      >
+        {isPending ? (
+          <>
+            <LoaderCircle
+              aria-hidden="true"
+              className="size-icon-sm animate-spin"
+            />
+            Redirecionando...
+          </>
+        ) : (
+          <>
+            <GoogleIcon />
+            Entrar com Google
+          </>
+        )}
+      </Button>
+    </form>
   );
 };
 
