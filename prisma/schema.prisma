@@ -114,11 +114,31 @@ model Subscription {
 }
 
 // Domínio
+
+// Cores da página pública oferecidas em Configurações (tokens color.brandPresets)
+enum BrandColor {
+  indigo
+  blue
+  teal
+  green
+  orange
+  rose
+  purple
+  graphite
+}
+
 model Establishment {
-  id     String @id @default(cuid())
-  name   String
-  slug   String @unique
-  userId String @unique
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  userId      String     @unique
+  description String?
+  address     String?
+  // Só dígitos, com DDD (10 ou 11)
+  phone       String?
+  // Usuário do Instagram, sem o @
+  instagram   String?
+  brandColor  BrandColor @default(indigo)
 
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   services Service[]
