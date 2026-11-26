@@ -25,6 +25,7 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 
 - Mostra nome, descrição, endereço, contato (telefone e Instagram), dias e horários de funcionamento e a lista de serviços (nome, duração e preço).
 - O estabelecimento escolhe a **cor** da página e a **imagem de perfil**. A cor é uma de 8 opções fixas (índigo, azul, turquesa, verde, laranja, rosa, roxo e grafite); o padrão é índigo.
+- A página tem um header com o logo do Bookora e um rodapé com o selo "Agendamento online por Bookora", nas cores do Bookora (não na cor do estabelecimento). Os dois aparecem em **todos os planos**, inclusive no Pro, e levam à landing em uma nova aba.
 - Fluxo do cliente: escolhe o serviço, escolhe o horário, informa nome e telefone (e-mail opcional) e confirma. Depois vê uma **tela de agradecimento** com o resumo.
 - O cliente só enxerga **hoje e amanhã**. Dias além disso não aparecem.
 - Se o limite de agendamentos do plano foi atingido, a página informa que não há horários disponíveis.
