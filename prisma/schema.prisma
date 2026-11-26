@@ -98,6 +98,8 @@ model Subscription {
   status SubscriptionStatus @default(active)
 
   // Campos do Stripe: nulos enquanto o usuário está no Basic
+  // O customer é criado no primeiro checkout e reaproveitado no portal e em novas assinaturas
+  stripeCustomerId     String?   @unique
   stripeSubscriptionId String?   @unique
   stripePriceId        String?
   currentPeriodEnd     DateTime?
