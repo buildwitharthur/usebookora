@@ -3,6 +3,7 @@ import { z } from "zod";
 import { BrandColor } from "@/generated/prisma/enums";
 import { RESERVED_SLUGS } from "@/shared/constants/reserved-slugs";
 import { generateSlug } from "@/shared/utils/generate-slug";
+import { TIME_ZONE_OPTIONS } from "../constants/time-zone-options";
 
 /** Campo opcional: espaços repetidos viram um e vazio vira null */
 const optionalText = (max: number, message: string) =>
@@ -66,6 +67,14 @@ export const updateEstablishmentSchema = z.object({
     }),
   // Entra como texto (vem do form) e só sai se for uma das cores da paleta
   brandColor: z.string().pipe(z.enum(BrandColor, "Escolha uma cor.")),
+  // Só aceita um dos fusos oferecidos no select
+  timeZone: z
+    .string()
+    .refine(
+      (timeZone) =>
+        TIME_ZONE_OPTIONS.some((option) => option.value === timeZone),
+      { message: "Escolha um fuso horário." },
+    ),
 });
 
 export type UpdateEstablishmentInput = z.input<

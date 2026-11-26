@@ -6,7 +6,9 @@ import type { BrandColor } from "@/generated/prisma/enums";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { Select } from "@/shared/components/ui/select";
 import { Textarea } from "@/shared/components/ui/textarea";
+import { TIME_ZONE_OPTIONS } from "../../constants/time-zone-options";
 import type { EstablishmentSettings } from "../../data-access/get-establishment-settings";
 import { useEstablishmentForm } from "../../hooks/use-establishment-form";
 import { formatPhone } from "../../utils/format-phone";
@@ -30,6 +32,7 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
     instagramError,
     slugError,
     brandColorError,
+    timeZoneError,
     formError,
   } = useEstablishmentForm();
 
@@ -42,6 +45,7 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
     instagram: establishment.instagram ?? "",
     slug: establishment.slug,
     brandColor: establishment.brandColor,
+    timeZone: establishment.timeZone,
   };
 
   // Controlada para mostrar o nome da cor escolhida no rótulo
@@ -245,6 +249,47 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
           error={brandColorError}
           disabled={isPending}
         />
+      </SettingsSection>
+
+      <SettingsSection
+        title="Agenda"
+        description="O fuso horário dos seus agendamentos."
+      >
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="establishment-time-zone">Fuso horário</Label>
+          <Select
+            id="establishment-time-zone"
+            name="timeZone"
+            defaultValue={defaults.timeZone}
+            disabled={isPending}
+            aria-invalid={!!timeZoneError}
+            aria-describedby={
+              timeZoneError
+                ? "establishment-time-zone-hint establishment-time-zone-error"
+                : "establishment-time-zone-hint"
+            }
+          >
+            {TIME_ZONE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+          <p
+            id="establishment-time-zone-hint"
+            className="text-xs text-fg-muted"
+          >
+            Define o que é hoje e amanhã na agenda e na sua página.
+          </p>
+          {timeZoneError && (
+            <p
+              id="establishment-time-zone-error"
+              className="text-xs text-danger"
+            >
+              {timeZoneError}
+            </p>
+          )}
+        </div>
       </SettingsSection>
 
       <div className="flex items-center justify-end gap-3">

@@ -67,6 +67,17 @@ const EstablishmentFormSkeleton = () => {
         </div>
       </div>
 
+      <div className={styles.root()}>
+        <SectionHeaderSkeleton titleWidth="w-20" />
+        <div className={styles.body()}>
+          <div className="flex flex-col gap-1.5">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="h-control-md w-full rounded-md" />
+            <Skeleton className="h-3 w-2/3" />
+          </div>
+        </div>
+      </div>
+
       <div className="flex justify-end">
         <Skeleton className="h-control-md w-36 rounded-md" />
       </div>

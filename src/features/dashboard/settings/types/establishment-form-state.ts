@@ -18,6 +18,7 @@ export type EstablishmentActionResult = {
     instagram?: string[];
     slug?: string[];
     brandColor?: string[];
+    timeZone?: string[];
   };
 };
 

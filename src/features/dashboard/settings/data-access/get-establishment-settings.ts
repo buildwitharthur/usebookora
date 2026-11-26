@@ -19,6 +19,7 @@ export const getEstablishmentSettings = cache(async () => {
       instagram: true,
       slug: true,
       brandColor: true,
+      timeZone: true,
     },
   });
 });

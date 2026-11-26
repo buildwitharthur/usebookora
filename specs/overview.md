@@ -33,9 +33,10 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 
 - **Agenda:** agendamentos de hoje e de amanhã, com cliente, telefone, serviço e horário. Somente visualização.
 - **Serviços:** criar, editar e excluir. Cada serviço tem nome, duração e preço. Excluir um serviço **apaga também os agendamentos dele**.
-- **Configurações:** dados do estabelecimento (nome, descrição, endereço, telefone e Instagram), slug, cor, imagem de perfil, dias da semana e horários de funcionamento.
+- **Configurações:** dados do estabelecimento (nome, descrição, endereço, telefone e Instagram), slug, cor, imagem de perfil, fuso horário, dias da semana e horários de funcionamento.
   - Só o nome é obrigatório. O telefone tem DDD; o Instagram é o nome de usuário, sem o @.
   - O slug pode ser trocado; o link antigo deixa de funcionar.
+  - O fuso horário é um dos 4 fusos oficiais do Brasil; o padrão é o de Brasília. Ele define o que é "hoje" e "amanhã" na agenda e na página pública.
 - **Plano:** plano atual e agendamentos usados na sidebar; upgrade e gerenciamento da assinatura no menu da conta.
 - **Compartilhar:** botão para copiar o link da página pública.
 

@@ -37,6 +37,7 @@ export const useEstablishmentForm = () => {
     instagramError: state.fieldErrors?.instagram?.[0],
     slugError: state.fieldErrors?.slug?.[0],
     brandColorError: state.fieldErrors?.brandColor?.[0],
+    timeZoneError: state.fieldErrors?.timeZone?.[0],
     formError: state.error,
   };
 };

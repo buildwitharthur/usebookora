@@ -71,7 +71,7 @@ shared/
   actions/                     actions usadas em vários lugares
   components/
     layouts/<nome>/index.tsx   layouts (shell do dashboard, auth, landing...)
-    ui/                        componentes base (Button, Input, Dialog, Skeleton...)
+    ui/                        componentes base (Button, Input, Select, Dialog, Skeleton...)
   constants/                   constantes globais (planos, slots, slugs reservados)
   data-access/<contexto>/      DAL transversal (session, establishment, subscription)
   guards/<contexto>/           guards de sessão e acesso
@@ -192,7 +192,7 @@ Toda página do dashboard tem uma entrada em `src/shared/components/layouts/shel
 
 - Props tipadas com `type <Componente>Props`. Documente props não óbvias com `/** */`.
 - Componentes base em `shared/components/ui/` são a exceção: usam export nomeado (`export const Button`), `data-slot`, `tailwind-variants` para variantes e `cn` para mesclar `className`.
-- Use sempre os componentes de `shared/components/ui/` (Button, Input, Textarea, Label, Dialog, AlertDialog, DropdownMenu, Skeleton...) antes de escrever um elemento estilizado na mão.
+- Use sempre os componentes de `shared/components/ui/` (Button, Input, Textarea, Select, Label, Dialog, AlertDialog, DropdownMenu, Skeleton...) antes de escrever um elemento estilizado na mão.
 - Comentários explicam o **porquê** de uma decisão, não o que o código faz.
 
 ### Estilo

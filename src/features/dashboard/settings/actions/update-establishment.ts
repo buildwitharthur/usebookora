@@ -32,11 +32,21 @@ const updateEstablishment = (
     instagram,
     slug,
     brandColor,
+    timeZone,
   }: UpdateEstablishmentOutput,
 ) =>
   prisma.establishment.update({
     where: { id },
-    data: { name, description, address, phone, instagram, slug, brandColor },
+    data: {
+      name,
+      description,
+      address,
+      phone,
+      instagram,
+      slug,
+      brandColor,
+      timeZone,
+    },
   });
 
 export const updateEstablishmentAction = async (

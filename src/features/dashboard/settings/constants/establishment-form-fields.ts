@@ -7,4 +7,5 @@ export const ESTABLISHMENT_FORM_FIELDS = [
   "instagram",
   "slug",
   "brandColor",
+  "timeZone",
 ] as const;
