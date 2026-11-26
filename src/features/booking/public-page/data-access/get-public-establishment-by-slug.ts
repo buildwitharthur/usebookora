@@ -12,6 +12,28 @@ import { prisma } from "@/shared/lib/prisma";
 export const getPublicEstablishmentBySlug = cache(async (slug: string) =>
   prisma.establishment.findUnique({
     where: { slug },
-    select: { name: true },
+    select: {
+      name: true,
+      description: true,
+      address: true,
+      phone: true,
+      instagram: true,
+      brandColor: true,
+      services: {
+        select: {
+          id: true,
+          name: true,
+          durationMinutes: true,
+          priceCents: true,
+        },
+        orderBy: { name: "asc" },
+      },
+    },
   }),
 );
+
+export type PublicEstablishment = NonNullable<
+  Awaited<ReturnType<typeof getPublicEstablishmentBySlug>>
+>;
+
+export type PublicServiceListItem = PublicEstablishment["services"][number];

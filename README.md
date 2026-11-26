@@ -51,7 +51,7 @@ As rotas ficam em grupos (as pastas entre parênteses não aparecem na URL):
 | ------------------------ | ------------------------------------------ | -------------------------------- |
 | `(landing)`              | `/`                                        | Público                          |
 | `(auth)`                 | `/login`, `/login/verify`, `/login/error`  | Público                          |
-| `(booking)`              | `/{slug}`                                  | Público                          |
+| `(booking)`              | `/{slug}`, `/{slug}/{serviceId}`           | Público                          |
 | `(protected)/onboarding` | `/onboarding`, `/onboarding/establishment` | Conta, ainda sem estabelecimento |
 | `(protected)/dashboard`  | `/dashboard`, `/dashboard/...`             | Conta com estabelecimento        |
 | `api/auth`               | rotas internas do login                    | Interno                          |
@@ -67,7 +67,7 @@ Uma pasta por área, e dentro dela uma pasta por módulo (tela ou conjunto de te
 | ------------ | ---------------------------------- |
 | `landing`    | `home`                             |
 | `auth`       | `login`, `verify-request`, `error` |
-| `booking`    | `public-page`                      |
+| `booking`    | `public-page`, `schedule`          |
 | `onboarding` | `home`, `establishment`            |
 | `dashboard`  | `agenda`, `services`, `settings`   |
 

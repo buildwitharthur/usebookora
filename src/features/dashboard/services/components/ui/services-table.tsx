@@ -1,7 +1,7 @@
+import { DurationSlots } from "@/shared/components/ui/duration-slots";
 import { formatCurrency } from "@/shared/utils/format-currency";
 import { formatDuration } from "@/shared/utils/format-duration";
 import type { ServiceListItem } from "../../data-access/get-services";
-import DurationSlots from "./duration-slots";
 import ServiceRowActions from "./service-row-actions";
 import ServicesTableHead, { servicesTable } from "./services-table-head";
 

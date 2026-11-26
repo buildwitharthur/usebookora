@@ -16,6 +16,7 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import { signOutAction } from "@/shared/actions/sign-out";
 import type { PlanId } from "@/shared/constants/plans";
+import { getInitials } from "@/shared/utils/get-initials";
 import SubscriptionButton from "./subscription-button";
 
 export type ShellUser = {
@@ -23,14 +24,6 @@ export type ShellUser = {
   email: string;
   image: string | null;
 };
-
-const getInitials = (name: string) =>
-  name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
 
 type UserMenuProps = ShellUser & {
   planId: PlanId;
