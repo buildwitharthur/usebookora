@@ -25,6 +25,79 @@ O **Bookora** é um app de agendamentos para salões, barbearias, clínicas e pr
 
 🔗 **https://usebookora.com.br**
 
+## Estrutura do projeto
+
+Um resumo de onde fica cada coisa. Os padrões de código (como escrever uma página, uma action, um hook) estão no [`AGENTS.md`](AGENTS.md).
+
+```
+usebookora/
+  specs/            documentação do produto (visão geral e tokens de design)
+  prisma/           schema e migrations do banco
+  public/           arquivos estáticos (ícones, imagens da marca)
+  src/
+    app/            rotas do Next.js: só páginas, layouts e metadata
+    features/       o código de cada tela, por área e módulo
+    shared/         o que é usado por mais de um módulo
+    generated/      código gerado (cliente do Prisma), não editar
+    proxy.ts        middleware de autenticação
+  AGENTS.md         padrões de desenvolvimento
+```
+
+### `src/app`: rotas
+
+As rotas ficam em grupos (as pastas entre parênteses não aparecem na URL):
+
+| Grupo                    | Rotas                                      | Acesso                           |
+| ------------------------ | ------------------------------------------ | -------------------------------- |
+| `(landing)`              | `/`                                        | Público                          |
+| `(auth)`                 | `/login`, `/login/verify`, `/login/error`  | Público                          |
+| `(booking)`              | `/{slug}`                                  | Público                          |
+| `(protected)/onboarding` | `/onboarding`, `/onboarding/establishment` | Conta, ainda sem estabelecimento |
+| `(protected)/dashboard`  | `/dashboard`, `/dashboard/...`             | Conta com estabelecimento        |
+| `api/auth`               | rotas internas do login                    | Interno                          |
+
+Cada `page.tsx` só define o título da página e aponta para a tela correspondente em `src/features/`.
+
+### `src/features`: telas
+
+Uma pasta por área, e dentro dela uma pasta por módulo (tela ou conjunto de telas):
+
+| Área         | Módulos                                  |
+| ------------ | ---------------------------------------- |
+| `landing`    | `home`                                   |
+| `auth`       | `login`, `verify-request`, `error`       |
+| `booking`    | `public-page`                            |
+| `onboarding` | `home`, `establishment`                  |
+| `dashboard`  | `home`, `agenda`, `services`, `settings` |
+
+Cada módulo separa o código por papel:
+
+```
+<módulo>/
+  components/pages/   a tela em si
+  components/ui/      as partes da tela
+  actions/            o que grava dados (criar, editar, excluir)
+  data-access/        o que lê dados
+  hooks/              a ligação entre os forms e as actions
+  schemas/            as regras de validação
+  constants/ types/ utils/
+```
+
+### `src/shared`: código comum
+
+| Pasta                | O que tem                                                        |
+| -------------------- | ---------------------------------------------------------------- |
+| `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...        |
+| `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking |
+| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano  |
+| `guards`             | proteção de acesso: exige login, exige estabelecimento...        |
+| `actions`            | ações usadas em vários lugares (ex.: sair)                       |
+| `lib`                | configuração de serviços: auth, banco, e-mail, pagamentos, env   |
+| `constants`          | valores globais: planos, tamanho dos slots                       |
+| `utils`              | funções de formatação e utilitários                              |
+| `styles`             | estilos globais e tokens de design                               |
+
 ## Documentação
 
-A visão geral do produto está em [specs/overview.md](specs/overview.md).
+- Visão geral do produto: [specs/overview.md](specs/overview.md).
+- Padrões de desenvolvimento: [AGENTS.md](AGENTS.md).

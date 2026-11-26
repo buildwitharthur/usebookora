@@ -36,10 +36,7 @@ export const useServiceForm = ({
     return result.success ? result : { ...result, values };
   };
 
-  const [state, formAction, isPending] = useActionState(
-    onSubmit,
-    initialState,
-  );
+  const [state, formAction, isPending] = useActionState(onSubmit, initialState);
 
   const handleSuccess = useEffectEvent(onSuccess);
 

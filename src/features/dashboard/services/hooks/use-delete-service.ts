@@ -19,10 +19,7 @@ export const useDeleteService = ({
   /** O form só confirma: o id vem da prop, não de um campo */
   const onSubmit = () => deleteServiceAction({ id: serviceId });
 
-  const [state, formAction, isPending] = useActionState(
-    onSubmit,
-    initialState,
-  );
+  const [state, formAction, isPending] = useActionState(onSubmit, initialState);
 
   const handleSuccess = useEffectEvent(onSuccess);
 
