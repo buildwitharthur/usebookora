@@ -55,6 +55,7 @@ As rotas ficam em grupos (as pastas entre parênteses não aparecem na URL):
 | `(protected)/onboarding` | `/onboarding`, `/onboarding/establishment` | Conta, ainda sem estabelecimento |
 | `(protected)/dashboard`  | `/dashboard`, `/dashboard/...`             | Conta com estabelecimento        |
 | `api/auth`               | rotas internas do login                    | Interno                          |
+| `api/stripe/webhook`     | avisos do Stripe sobre a assinatura        | Interno (assinado pelo Stripe)   |
 
 Cada `page.tsx` só define o título da página e aponta para a tela correspondente em `src/features/`.
 
@@ -85,18 +86,19 @@ Cada módulo separa o código por papel:
 
 ### `src/shared`: código comum
 
-| Pasta                | O que tem                                                                   |
-| -------------------- | --------------------------------------------------------------------------- |
-| `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...                   |
-| `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking            |
-| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano             |
-| `guards`             | proteção de acesso: exige login, exige estabelecimento...                   |
-| `actions`            | ações usadas em vários lugares (ex.: sair)                                  |
-| `lib`                | configuração de serviços: auth (com o login por e-mail), banco, env, Stripe |
-| `constants`          | valores globais: planos, tamanho dos slots                                  |
-| `types`              | declarações globais de tipos (ex.: sessão do Auth.js)                       |
-| `utils`              | funções de formatação e utilitários                                         |
-| `styles`             | estilos globais e tokens de design                                          |
+| Pasta                | O que tem                                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...                                                  |
+| `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking                                           |
+| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano                                            |
+| `guards`             | proteção de acesso: exige login, exige estabelecimento...                                                  |
+| `hooks`              | ligação entre forms e as actions de `shared/actions`                                                       |
+| `actions`            | ações usadas em vários lugares (ex.: sair)                                                                 |
+| `lib`                | configuração de serviços: auth (com o login por e-mail), banco, env, Stripe                                |
+| `constants`          | valores globais: planos, tamanho dos slots                                                                 |
+| `types`              | declarações globais de tipos (ex.: sessão do Auth.js) e tipos de resultado das actions de `shared/actions` |
+| `utils`              | funções de formatação e utilitários                                                                        |
+| `styles`             | estilos globais e tokens de design                                                                         |
 
 ## Documentação
 

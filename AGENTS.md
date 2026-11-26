@@ -43,6 +43,7 @@ src/
 - O código de uma tela fica em `src/features/<área>/<módulo>/`.
 - Só vai para `src/shared/` o que é usado por mais de um módulo.
 - Imports: `@/shared/...` e `@/features/...` para fora do módulo, caminhos relativos (`../..`) dentro do módulo.
+- Exceção: webhooks (ex.: `src/app/api/stripe/webhook/route.ts`) ficam inteiros no `route.ts`, com as funções auxiliares privadas no arquivo. Eles não têm tela nem são chamados pelo app, só pelo serviço externo.
 
 ### Estrutura de um módulo
 
@@ -74,9 +75,10 @@ shared/
   constants/                   constantes globais (planos, slots)
   data-access/<contexto>/      DAL transversal (session, establishment, subscription)
   guards/<contexto>/           guards de sessão e acesso
+  hooks/                       hooks de client que ligam um form a uma action de `shared/actions`
   lib/<nome>/index.ts          clientes e configuração (auth, prisma, env...)
   styles/globals.css           tokens e estilos globais
-  types/                       declarações globais de tipos (ex.: sessão do Auth.js)
+  types/                       declarações globais de tipos (ex.: sessão do Auth.js) e tipos de resultado das actions de `shared/actions`
   utils/                       funções puras globais
 ```
 
