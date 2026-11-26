@@ -2,8 +2,7 @@
 
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { InputField } from "@/shared/components/ui/field/input-field";
 import { useCreateEstablishment } from "../../hooks/use-create-establishment";
 
 const EstablishmentForm = () => {
@@ -21,26 +20,18 @@ const EstablishmentForm = () => {
         </p>
       )}
 
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Nome</Label>
-        <Input
-          id="name"
-          name="name"
-          type="text"
-          autoComplete="organization"
-          placeholder="Ex.: Barbearia Central"
-          defaultValue={state.values?.name}
-          disabled={isPending}
-          aria-invalid={!!nameError}
-          aria-describedby={nameError ? "name-error" : undefined}
-          required
-        />
-        {nameError && (
-          <p id="name-error" className="text-xs text-danger">
-            {nameError}
-          </p>
-        )}
-      </div>
+      <InputField
+        id="name"
+        label="Nome"
+        error={nameError}
+        name="name"
+        type="text"
+        autoComplete="organization"
+        placeholder="Ex.: Barbearia Central"
+        defaultValue={state.values?.name}
+        disabled={isPending}
+        required
+      />
 
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? (

@@ -3,8 +3,7 @@
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { InputField } from "@/shared/components/ui/field/input-field";
 import { SLOT_MINUTES } from "@/shared/constants/slots";
 import type { ScheduleDay } from "../../data-access/get-service-availability";
 import { useBookingForm } from "../../hooks/use-booking-form";
@@ -122,74 +121,46 @@ const BookingForm = ({
           Seus dados
         </h2>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="booking-client-name">Nome</Label>
-          <Input
-            id="booking-client-name"
-            name="clientName"
-            autoComplete="name"
-            maxLength={80}
-            defaultValue={defaults.clientName}
-            aria-invalid={!!clientNameError}
-            aria-describedby={
-              clientNameError ? "booking-client-name-error" : undefined
-            }
-          />
-          {clientNameError && (
-            <p id="booking-client-name-error" className="text-xs text-danger">
-              {clientNameError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="booking-client-name"
+          label="Nome"
+          error={clientNameError}
+          name="clientName"
+          autoComplete="name"
+          maxLength={80}
+          defaultValue={defaults.clientName}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="booking-client-phone">Telefone</Label>
-          <Input
-            id="booking-client-phone"
-            name="clientPhone"
-            type="tel"
-            inputMode="tel"
-            placeholder="(11) 91234-5678"
-            autoComplete="tel"
-            defaultValue={defaults.clientPhone}
-            aria-invalid={!!clientPhoneError}
-            aria-describedby={
-              clientPhoneError ? "booking-client-phone-error" : undefined
-            }
-            className="tabular"
-          />
-          {clientPhoneError && (
-            <p id="booking-client-phone-error" className="text-xs text-danger">
-              {clientPhoneError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="booking-client-phone"
+          label="Telefone"
+          error={clientPhoneError}
+          name="clientPhone"
+          type="tel"
+          inputMode="tel"
+          placeholder="(11) 91234-5678"
+          autoComplete="tel"
+          defaultValue={defaults.clientPhone}
+          className="tabular"
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="booking-client-email">
-            E-mail{" "}
-            <span className="font-regular text-fg-muted">(opcional)</span>
-          </Label>
-          <Input
-            id="booking-client-email"
-            name="clientEmail"
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            autoCapitalize="none"
-            spellCheck={false}
-            defaultValue={defaults.clientEmail}
-            aria-invalid={!!clientEmailError}
-            aria-describedby={
-              clientEmailError ? "booking-client-email-error" : undefined
-            }
-          />
-          {clientEmailError && (
-            <p id="booking-client-email-error" className="text-xs text-danger">
-              {clientEmailError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="booking-client-email"
+          label={
+            <>
+              E-mail{" "}
+              <span className="font-regular text-fg-muted">(opcional)</span>
+            </>
+          }
+          error={clientEmailError}
+          name="clientEmail"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
+          defaultValue={defaults.clientEmail}
+        />
 
         <div className="flex flex-col gap-3 border-t border-border pt-4">
           <p aria-live="polite" className="text-sm text-fg-secondary">

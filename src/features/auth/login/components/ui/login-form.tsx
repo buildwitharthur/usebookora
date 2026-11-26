@@ -2,8 +2,7 @@
 
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { InputField } from "@/shared/components/ui/field/input-field";
 import { useGoogleLogin } from "../../hooks/use-google-login";
 import { useMagicLinkLogin } from "../../hooks/use-magic-link-login";
 import GoogleLoginButton from "./google-login-button";
@@ -41,26 +40,18 @@ const LoginForm = () => {
       </div>
 
       <form action={formAction} className="flex flex-col gap-3" noValidate>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="email">E-mail</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            placeholder="voce@exemplo.com"
-            defaultValue={state.values?.email}
-            disabled={isAnyPending}
-            aria-invalid={!!emailError}
-            aria-describedby={emailError ? "email-error" : undefined}
-            required
-          />
-          {emailError && (
-            <p id="email-error" className="text-xs text-danger">
-              {emailError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="email"
+          label="E-mail"
+          error={emailError}
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder="voce@exemplo.com"
+          defaultValue={state.values?.email}
+          disabled={isAnyPending}
+          required
+        />
 
         <Button type="submit" className="w-full" disabled={isAnyPending}>
           {isPending ? (

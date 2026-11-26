@@ -3,8 +3,10 @@
 import { LoaderCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { DialogClose, DialogFooter } from "@/shared/components/ui/dialog";
-import { Input, inputVariants } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { Field } from "@/shared/components/ui/field/field";
+import { InputField } from "@/shared/components/ui/field/input-field";
+import { SelectField } from "@/shared/components/ui/field/select-field";
+import { Input } from "@/shared/components/ui/input";
 import { SLOT_MINUTES } from "@/shared/constants/slots";
 import { formatDuration } from "@/shared/utils/format-duration";
 import { SERVICE_DURATION_OPTIONS } from "../../constants/service-duration";
@@ -48,83 +50,59 @@ const ServiceForm = ({ service, onSuccess }: ServiceFormProps) => {
         </p>
       )}
 
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="service-name">Nome</Label>
-        <Input
-          id="service-name"
-          name="name"
-          placeholder="Ex.: Corte masculino"
-          maxLength={60}
-          autoComplete="off"
-          defaultValue={defaults.name}
-          disabled={isPending}
-          aria-invalid={!!nameError}
-          aria-describedby={nameError ? "service-name-error" : undefined}
-          required
-        />
-        {nameError && (
-          <p id="service-name-error" className="text-xs text-danger">
-            {nameError}
-          </p>
-        )}
-      </div>
+      <InputField
+        id="service-name"
+        label="Nome"
+        error={nameError}
+        name="name"
+        placeholder="Ex.: Corte masculino"
+        maxLength={60}
+        autoComplete="off"
+        defaultValue={defaults.name}
+        disabled={isPending}
+        required
+      />
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="service-duration">Duração</Label>
-          <select
-            id="service-duration"
-            name="durationMinutes"
-            defaultValue={defaults.durationMinutes}
-            disabled={isPending}
-            aria-invalid={!!durationError}
-            aria-describedby={
-              durationError ? "service-duration-error" : undefined
-            }
-            className={inputVariants({ class: "tabular" })}
-          >
-            {SERVICE_DURATION_OPTIONS.map((minutes) => (
-              <option key={minutes} value={minutes}>
-                {formatDuration(minutes)}
-              </option>
-            ))}
-          </select>
-          {durationError && (
-            <p id="service-duration-error" className="text-xs text-danger">
-              {durationError}
-            </p>
-          )}
-        </div>
+        <SelectField
+          id="service-duration"
+          label="Duração"
+          error={durationError}
+          name="durationMinutes"
+          defaultValue={defaults.durationMinutes}
+          disabled={isPending}
+          className="tabular"
+        >
+          {SERVICE_DURATION_OPTIONS.map((minutes) => (
+            <option key={minutes} value={minutes}>
+              {formatDuration(minutes)}
+            </option>
+          ))}
+        </SelectField>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="service-price">Preço</Label>
-          <div className="relative">
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-fg-muted"
-            >
-              R$
-            </span>
-            <Input
-              id="service-price"
-              name="price"
-              inputMode="decimal"
-              placeholder="0,00"
-              autoComplete="off"
-              defaultValue={defaults.price}
-              disabled={isPending}
-              aria-invalid={!!priceError}
-              aria-describedby={priceError ? "service-price-error" : undefined}
-              className="pl-9 tabular"
-              required
-            />
-          </div>
-          {priceError && (
-            <p id="service-price-error" className="text-xs text-danger">
-              {priceError}
-            </p>
+        <Field id="service-price" label="Preço" error={priceError}>
+          {(control) => (
+            <div className="relative">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-fg-muted"
+              >
+                R$
+              </span>
+              <Input
+                {...control}
+                name="price"
+                inputMode="decimal"
+                placeholder="0,00"
+                autoComplete="off"
+                defaultValue={defaults.price}
+                disabled={isPending}
+                className="pl-9 tabular"
+                required
+              />
+            </div>
           )}
-        </div>
+        </Field>
       </div>
 
       <DialogFooter className="pt-1">

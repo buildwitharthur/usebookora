@@ -194,7 +194,7 @@ Toda página do dashboard tem uma entrada em `src/shared/components/layouts/shel
 
 - Props tipadas com `type <Componente>Props`. Documente props não óbvias com `/** */`.
 - Componentes base em `shared/components/ui/` são a exceção: usam export nomeado (`export const Button`), `data-slot`, `tailwind-variants` para variantes e `cn` para mesclar `className`.
-- Use sempre os componentes de `shared/components/ui/` (Button, Input, Textarea, Select, Label, Dialog, AlertDialog, DropdownMenu, Skeleton, DurationSlots...) antes de escrever um elemento estilizado na mão.
+- Use sempre os componentes de `shared/components/ui/` (Button, Input, Textarea, Select, Label, InputField, TextareaField, SelectField, Dialog, AlertDialog, DropdownMenu, Skeleton, DurationSlots...) antes de escrever um elemento estilizado na mão.
 - Comentários explicam o **porquê** de uma decisão, não o que o código faz.
 
 ### Estilo
@@ -439,7 +439,7 @@ Regras do form:
 - Ids não vão em `<input type="hidden">`: o hook recebe da prop.
 - Exclusão usa `AlertDialog`, com o botão de confirmar sendo um `Button type="submit" variant="danger"` comum (não `AlertDialogAction`), para o dialog só fechar quando a exclusão terminar.
 
-Erro geral e erro de campo seguem sempre este formato:
+O erro geral segue sempre este formato:
 
 ```tsx
 {
@@ -452,23 +452,34 @@ Erro geral e erro de campo seguem sempre este formato:
     </p>
   );
 }
+```
 
-<div className="flex flex-col gap-1.5">
-  <Label htmlFor="item-name">Nome</Label>
-  <Input
-    id="item-name"
-    name="name"
-    defaultValue={defaults.name}
-    disabled={isPending}
-    aria-invalid={!!nameError}
-    aria-describedby={nameError ? "item-name-error" : undefined}
-  />
-  {nameError && (
-    <p id="item-name-error" className="text-xs text-danger">
-      {nameError}
-    </p>
+Campos com rótulo usam os componentes de `shared/components/ui/field/`: `InputField`, `TextareaField` e `SelectField`. Eles recebem `id`, `label`, `error` e `hint` (opcional) e estendem as props do controle (`className` vai para o controle). O `id` gera os ids da dica (`<id>-hint`) e do erro (`<id>-error`) e liga `aria-invalid` e `aria-describedby` sozinho:
+
+```tsx
+<InputField
+  id="item-name"
+  label="Nome"
+  error={nameError}
+  name="name"
+  defaultValue={defaults.name}
+  disabled={isPending}
+/>
+```
+
+Quando o controle precisa de algo em volta (prefixo como "R$", addon), use o `Field` direto: ele recebe uma função que devolve o controle com as props de acessibilidade já resolvidas:
+
+```tsx
+<Field id="item-price" label="Preço" error={priceError}>
+  {(control) => (
+    <div className="relative">
+      <span aria-hidden="true" className="...">
+        R$
+      </span>
+      <Input {...control} name="price" className="pl-9" />
+    </div>
   )}
-</div>;
+</Field>
 ```
 
 ## 10. Schemas (zod)

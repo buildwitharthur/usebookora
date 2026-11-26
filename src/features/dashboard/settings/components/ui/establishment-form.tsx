@@ -4,10 +4,11 @@ import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import type { BrandColor } from "@/generated/prisma/enums";
 import { Button } from "@/shared/components/ui/button";
+import { Field } from "@/shared/components/ui/field/field";
+import { InputField } from "@/shared/components/ui/field/input-field";
+import { SelectField } from "@/shared/components/ui/field/select-field";
+import { TextareaField } from "@/shared/components/ui/field/textarea-field";
 import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
-import { Select } from "@/shared/components/ui/select";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { TIME_ZONE_OPTIONS } from "../../constants/time-zone-options";
 import type { EstablishmentSettings } from "../../data-access/get-establishment-settings";
 import { useEstablishmentForm } from "../../hooks/use-establishment-form";
@@ -68,135 +69,85 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
         title="Dados do estabelecimento"
         description="Aparecem para os clientes na sua página de agendamentos."
       >
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="establishment-name">Nome</Label>
-          <Input
-            id="establishment-name"
-            name="name"
-            placeholder="Ex.: Barbearia Central"
-            maxLength={60}
-            autoComplete="organization"
-            defaultValue={defaults.name}
-            disabled={isPending}
-            aria-invalid={!!nameError}
-            aria-describedby={
-              nameError ? "establishment-name-error" : undefined
-            }
-            required
-          />
-          {nameError && (
-            <p id="establishment-name-error" className="text-xs text-danger">
-              {nameError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="establishment-name"
+          label="Nome"
+          error={nameError}
+          name="name"
+          placeholder="Ex.: Barbearia Central"
+          maxLength={60}
+          autoComplete="organization"
+          defaultValue={defaults.name}
+          disabled={isPending}
+          required
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="establishment-description">Descrição</Label>
-          <Textarea
-            id="establishment-description"
-            name="description"
-            placeholder="Ex.: Cortes clássicos e barba na navalha, no centro da cidade."
-            maxLength={300}
-            defaultValue={defaults.description}
-            disabled={isPending}
-            aria-invalid={!!descriptionError}
-            aria-describedby={
-              descriptionError ? "establishment-description-error" : undefined
-            }
-          />
-          {descriptionError && (
-            <p
-              id="establishment-description-error"
-              className="text-xs text-danger"
-            >
-              {descriptionError}
-            </p>
-          )}
-        </div>
+        <TextareaField
+          id="establishment-description"
+          label="Descrição"
+          error={descriptionError}
+          name="description"
+          placeholder="Ex.: Cortes clássicos e barba na navalha, no centro da cidade."
+          maxLength={300}
+          defaultValue={defaults.description}
+          disabled={isPending}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="establishment-address">Endereço</Label>
-          <Input
-            id="establishment-address"
-            name="address"
-            placeholder="Ex.: Rua das Flores, 123 - Centro, São Paulo/SP"
-            maxLength={160}
-            autoComplete="street-address"
-            defaultValue={defaults.address}
-            disabled={isPending}
-            aria-invalid={!!addressError}
-            aria-describedby={
-              addressError ? "establishment-address-error" : undefined
-            }
-          />
-          {addressError && (
-            <p id="establishment-address-error" className="text-xs text-danger">
-              {addressError}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="establishment-address"
+          label="Endereço"
+          error={addressError}
+          name="address"
+          placeholder="Ex.: Rua das Flores, 123 - Centro, São Paulo/SP"
+          maxLength={160}
+          autoComplete="street-address"
+          defaultValue={defaults.address}
+          disabled={isPending}
+        />
 
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="establishment-phone">Telefone</Label>
-            <Input
-              id="establishment-phone"
-              name="phone"
-              type="tel"
-              inputMode="tel"
-              placeholder="(11) 91234-5678"
-              autoComplete="tel"
-              defaultValue={defaults.phone}
-              disabled={isPending}
-              aria-invalid={!!phoneError}
-              aria-describedby={
-                phoneError ? "establishment-phone-error" : undefined
-              }
-              className="tabular"
-            />
-            {phoneError && (
-              <p id="establishment-phone-error" className="text-xs text-danger">
-                {phoneError}
-              </p>
-            )}
-          </div>
+          <InputField
+            id="establishment-phone"
+            label="Telefone"
+            error={phoneError}
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            placeholder="(11) 91234-5678"
+            autoComplete="tel"
+            defaultValue={defaults.phone}
+            disabled={isPending}
+            className="tabular"
+          />
 
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="establishment-instagram">Instagram</Label>
-            <div className="relative">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-fg-muted"
-              >
-                @
-              </span>
-              <Input
-                id="establishment-instagram"
-                name="instagram"
-                placeholder="seuperfil"
-                maxLength={31}
-                autoComplete="off"
-                autoCapitalize="none"
-                spellCheck={false}
-                defaultValue={defaults.instagram}
-                disabled={isPending}
-                aria-invalid={!!instagramError}
-                aria-describedby={
-                  instagramError ? "establishment-instagram-error" : undefined
-                }
-                className="pl-7"
-              />
-            </div>
-            {instagramError && (
-              <p
-                id="establishment-instagram-error"
-                className="text-xs text-danger"
-              >
-                {instagramError}
-              </p>
+          <Field
+            id="establishment-instagram"
+            label="Instagram"
+            error={instagramError}
+          >
+            {(control) => (
+              <div className="relative">
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-fg-muted"
+                >
+                  @
+                </span>
+                <Input
+                  {...control}
+                  name="instagram"
+                  placeholder="seuperfil"
+                  maxLength={31}
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  defaultValue={defaults.instagram}
+                  disabled={isPending}
+                  className="pl-7"
+                />
+              </div>
             )}
-          </div>
+          </Field>
         </div>
       </SettingsSection>
 
@@ -204,44 +155,36 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
         title="Página pública"
         description="O link que você compartilha e a cor da sua página."
       >
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="establishment-slug">Link</Label>
-          <div className="flex">
-            <span
-              aria-hidden="true"
-              className="inline-flex shrink-0 items-center rounded-l-md border border-r-0 border-border-strong bg-subtle px-3 text-sm text-fg-muted"
-            >
-              usebookora.com.br/
-            </span>
-            <Input
-              id="establishment-slug"
-              name="slug"
-              placeholder="barbearia-central"
-              maxLength={60}
-              autoComplete="off"
-              autoCapitalize="none"
-              spellCheck={false}
-              defaultValue={defaults.slug}
-              disabled={isPending}
-              aria-invalid={!!slugError}
-              aria-describedby={
-                slugError
-                  ? "establishment-slug-hint establishment-slug-error"
-                  : "establishment-slug-hint"
-              }
-              className="rounded-l-none"
-              required
-            />
-          </div>
-          <p id="establishment-slug-hint" className="text-xs text-fg-muted">
-            Ao mudar, o link antigo deixa de funcionar.
-          </p>
-          {slugError && (
-            <p id="establishment-slug-error" className="text-xs text-danger">
-              {slugError}
-            </p>
+        <Field
+          id="establishment-slug"
+          label="Link"
+          error={slugError}
+          hint="Ao mudar, o link antigo deixa de funcionar."
+        >
+          {(control) => (
+            <div className="flex">
+              <span
+                aria-hidden="true"
+                className="inline-flex shrink-0 items-center rounded-l-md border border-r-0 border-border-strong bg-subtle px-3 text-sm text-fg-muted"
+              >
+                usebookora.com.br/
+              </span>
+              <Input
+                {...control}
+                name="slug"
+                placeholder="barbearia-central"
+                maxLength={60}
+                autoComplete="off"
+                autoCapitalize="none"
+                spellCheck={false}
+                defaultValue={defaults.slug}
+                disabled={isPending}
+                className="rounded-l-none"
+                required
+              />
+            </div>
           )}
-        </div>
+        </Field>
 
         <BrandColorField
           value={brandColor}
@@ -255,41 +198,21 @@ const EstablishmentForm = ({ establishment }: EstablishmentFormProps) => {
         title="Agenda"
         description="O fuso horário dos seus agendamentos."
       >
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="establishment-time-zone">Fuso horário</Label>
-          <Select
-            id="establishment-time-zone"
-            name="timeZone"
-            defaultValue={defaults.timeZone}
-            disabled={isPending}
-            aria-invalid={!!timeZoneError}
-            aria-describedby={
-              timeZoneError
-                ? "establishment-time-zone-hint establishment-time-zone-error"
-                : "establishment-time-zone-hint"
-            }
-          >
-            {TIME_ZONE_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-          <p
-            id="establishment-time-zone-hint"
-            className="text-xs text-fg-muted"
-          >
-            Define o que é hoje e amanhã na agenda e na sua página.
-          </p>
-          {timeZoneError && (
-            <p
-              id="establishment-time-zone-error"
-              className="text-xs text-danger"
-            >
-              {timeZoneError}
-            </p>
-          )}
-        </div>
+        <SelectField
+          id="establishment-time-zone"
+          label="Fuso horário"
+          error={timeZoneError}
+          hint="Define o que é hoje e amanhã na agenda e na sua página."
+          name="timeZone"
+          defaultValue={defaults.timeZone}
+          disabled={isPending}
+        >
+          {TIME_ZONE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </SelectField>
       </SettingsSection>
 
       <div className="flex items-center justify-end gap-3">
