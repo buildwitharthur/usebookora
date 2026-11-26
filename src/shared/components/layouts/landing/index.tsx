@@ -1,4 +1,6 @@
 import React from "react";
+
+import { dayjs } from "@/shared/lib/dayjs";
 import LandingFooter from "./footer";
 import LandingHeader from "./header";
 
@@ -31,7 +33,7 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
         navLabel="Links do rodapé"
         tagline="Sistema de agendamento online para salões, barbearias, clínicas e autônomos."
         links={[...navLinks, { label: "Entrar", href: "/login" }]}
-        copyright={`© ${new Date().getFullYear()} Bookora. Todos os direitos reservados.`}
+        copyright={`© ${dayjs().year()} Bookora. Todos os direitos reservados.`}
       />
     </>
   );

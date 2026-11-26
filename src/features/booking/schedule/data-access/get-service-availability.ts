@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 
 import { PLANS } from "@/shared/constants/plans";
+import { type Dayjs, dayjs } from "@/shared/lib/dayjs";
 import { prisma } from "@/shared/lib/prisma";
 import { addDaysToDateKey } from "@/shared/utils/add-days-to-date-key";
 import { getDateKey } from "@/shared/utils/get-date-key";
@@ -10,8 +11,6 @@ import { SCHEDULE_DAYS } from "../constants/schedule-days";
 import { buildDaySlots } from "../utils/build-day-slots";
 import { formatDateKey } from "../utils/format-date-key";
 import { getPublicService } from "./get-public-service";
-
-const DAY_MS = 24 * 60 * 60 * 1000;
 
 const getOpeningHours = (establishmentId: string) =>
   prisma.openingHours.findMany({
@@ -21,12 +20,12 @@ const getOpeningHours = (establishmentId: string) =>
 
 // Só os que ainda não terminaram importam: horário que já passou fica
 // indisponível de qualquer jeito. 3 dias à frente cobrem amanhã em qualquer fuso do Brasil
-const getUpcomingBookings = (establishmentId: string, now: Date) =>
+const getUpcomingBookings = (establishmentId: string, now: Dayjs) =>
   prisma.booking.findMany({
     where: {
       establishmentId,
-      endsAt: { gt: now },
-      startsAt: { lt: new Date(now.getTime() + 3 * DAY_MS) },
+      endsAt: { gt: now.toDate() },
+      startsAt: { lt: now.add(3, "day").toDate() },
     },
     select: { startsAt: true, endsAt: true },
   });
@@ -47,8 +46,7 @@ const isAcceptingBookings = async (establishmentId: string, userId: string) => {
 };
 
 /** 0 = domingo ... 6 = sábado, como o weekday do horário de funcionamento */
-const getWeekday = (dateKey: string) =>
-  new Date(`${dateKey}T00:00:00Z`).getUTCDay();
+const getWeekday = (dateKey: string) => dayjs.utc(dateKey).day();
 
 /**
  * Horários de hoje e de amanhã para um serviço, no fuso do estabelecimento.
@@ -65,7 +63,7 @@ export const getServiceAvailability = cache(
 
     const { establishment } = service;
     const { timeZone } = establishment;
-    const now = new Date();
+    const now = dayjs();
 
     const [openingHours, bookings, acceptingBookings] = await Promise.all([
       getOpeningHours(establishment.id),

@@ -1,6 +1,7 @@
 import { SLOT_MINUTES } from "@/shared/constants/slots";
+import type { Dayjs } from "@/shared/lib/dayjs";
 import { formatTime } from "@/shared/utils/format-time";
-import { zonedTimeToDate } from "./zoned-time-to-date";
+import { getZonedTime } from "./get-zoned-time";
 
 type BuildDaySlotsParams = {
   /** Dia no fuso do estabelecimento, como "AAAA-MM-DD" */
@@ -11,7 +12,7 @@ type BuildDaySlotsParams = {
   durationMinutes: number;
   /** Agendamentos que podem ocupar o dia */
   bookings: { startsAt: Date; endsAt: Date }[];
-  now: Date;
+  now: Dayjs;
   timeZone: string;
 };
 
@@ -31,13 +32,14 @@ export const buildDaySlots = ({
 }: BuildDaySlotsParams) =>
   Array.from({ length: (closesAt - opensAt) / SLOT_MINUTES }, (_, index) => {
     const minutes = opensAt + index * SLOT_MINUTES;
-    const startsAt = zonedTimeToDate(dateKey, minutes, timeZone);
-    const endsAt = new Date(startsAt.getTime() + durationMinutes * 60_000);
+    const startsAt = getZonedTime(dateKey, minutes, timeZone);
+    const endsAt = startsAt.add(durationMinutes, "minute");
 
-    const isFuture = startsAt > now;
+    const isFuture = startsAt.isAfter(now);
     const fitsBeforeClosing = minutes + durationMinutes <= closesAt;
     const isFree = !bookings.some(
-      (booking) => booking.startsAt < endsAt && booking.endsAt > startsAt,
+      (booking) =>
+        endsAt.isAfter(booking.startsAt) && startsAt.isBefore(booking.endsAt),
     );
 
     return {

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
+import { dayjs } from "@/shared/lib/dayjs";
 import { prisma } from "@/shared/lib/prisma";
 import type { PublicService } from "../data-access/get-public-service";
 import {
@@ -37,7 +38,7 @@ const createBooking = (
   slot: ScheduleSlot,
   { clientName, clientPhone, clientEmail }: CreateBookingOutput,
 ) => {
-  const startsAt = new Date(slot.value);
+  const startsAt = dayjs(slot.value);
 
   return prisma.booking.create({
     data: {
@@ -46,8 +47,8 @@ const createBooking = (
       clientName,
       clientPhone,
       clientEmail,
-      startsAt,
-      endsAt: new Date(startsAt.getTime() + service.durationMinutes * 60_000),
+      startsAt: startsAt.toDate(),
+      endsAt: startsAt.add(service.durationMinutes, "minute").toDate(),
     },
   });
 };

@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 
 import { SubscriptionStatus } from "@/generated/prisma/enums";
+import { dayjs } from "@/shared/lib/dayjs";
 import { env } from "@/shared/lib/env";
 import { prisma } from "@/shared/lib/prisma";
 import { stripe } from "@/shared/lib/stripe";
@@ -56,7 +57,9 @@ const syncSubscription = async (subscriptionId: string) => {
       status: subscription.status,
       stripeSubscriptionId: subscription.id,
       stripePriceId: item?.price.id ?? null,
-      currentPeriodEnd: item ? new Date(item.current_period_end * 1000) : null,
+      currentPeriodEnd: item
+        ? dayjs.unix(item.current_period_end).toDate()
+        : null,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
     },
   });

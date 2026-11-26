@@ -3,11 +3,10 @@ import "server-only";
 import { cache } from "react";
 
 import { getCurrentEstablishmentOrThrow } from "@/shared/data-access/establishment/get-current-establishment-or-throw";
+import { dayjs } from "@/shared/lib/dayjs";
 import { prisma } from "@/shared/lib/prisma";
 import { addDaysToDateKey } from "@/shared/utils/add-days-to-date-key";
 import { getDateKey } from "@/shared/utils/get-date-key";
-
-const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
  * Agendamentos de hoje e de amanhã do estabelecimento do usuário logado,
@@ -16,7 +15,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export const getAgenda = cache(async () => {
   const establishment = await getCurrentEstablishmentOrThrow();
   const { timeZone } = establishment;
-  const now = new Date();
+  const now = dayjs();
 
   // Janela de 24h para trás e 48h para frente: cobre hoje e amanhã em qualquer
   // fuso do Brasil (sem horário de verão). O recorte exato é pelo dia no fuso, abaixo
@@ -24,8 +23,8 @@ export const getAgenda = cache(async () => {
     where: {
       establishmentId: establishment.id,
       startsAt: {
-        gte: new Date(now.getTime() - DAY_MS),
-        lt: new Date(now.getTime() + 2 * DAY_MS),
+        gte: now.subtract(1, "day").toDate(),
+        lt: now.add(2, "day").toDate(),
       },
     },
     select: {
@@ -44,7 +43,7 @@ export const getAgenda = cache(async () => {
 
   const withStatus = bookings.map((booking) => ({
     ...booking,
-    hasEnded: booking.endsAt <= now,
+    hasEnded: !dayjs(booking.endsAt).isAfter(now),
   }));
 
   const onDay = (dateKey: string) =>

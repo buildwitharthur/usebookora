@@ -94,7 +94,7 @@ Cada módulo separa o código por papel:
 | `guards`             | proteção de acesso: exige login, exige estabelecimento...                                                  |
 | `hooks`              | ligação entre forms e as actions de `shared/actions`                                                       |
 | `actions`            | ações usadas em vários lugares (ex.: sair)                                                                 |
-| `lib`                | configuração de serviços: auth (com o login por e-mail), banco, env, Stripe                                |
+| `lib`                | configuração de serviços: auth (com o login por e-mail), banco, datas (dayjs), env, Stripe                 |
 | `constants`          | valores globais: planos, tamanho dos slots, slugs reservados                                               |
 | `types`              | declarações globais de tipos (ex.: sessão do Auth.js) e tipos de resultado das actions de `shared/actions` |
 | `utils`              | funções de formatação e utilitários                                                                        |

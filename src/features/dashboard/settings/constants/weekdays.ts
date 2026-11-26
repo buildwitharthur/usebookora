@@ -1,6 +1,6 @@
 /**
  * Dias da semana na ordem das Configurações (segunda primeiro).
- * `weekday` segue Date.getDay(): 0 = domingo ... 6 = sábado.
+ * `weekday` segue o `day()` do dayjs: 0 = domingo ... 6 = sábado.
  */
 export const WEEKDAYS = [
   { key: "monday", weekday: 1, label: "Segunda" },

@@ -25,7 +25,9 @@ Se o pedido contradiz a spec, ou a spec não cobre o caso, **pare e pergunte**. 
 
 ## 3. Stack
 
-Next.js (App Router, Server Components, Server Actions) · React 19 · TypeScript · Prisma (PostgreSQL) · Auth.js · Zod 4 · Tailwind CSS v4 com os tokens do projeto · `tailwind-variants` · Radix UI · `lucide-react` · pnpm.
+Next.js (App Router, Server Components, Server Actions) · React 19 · TypeScript · Prisma (PostgreSQL) · Auth.js · Zod 4 · Tailwind CSS v4 com os tokens do projeto · `tailwind-variants` · Radix UI · `lucide-react` · `dayjs` · pnpm.
+
+Datas e horários (contas, comparações, fusos e formatação) usam sempre o `dayjs`, importado de `@/shared/lib/dayjs`, que já carrega os plugins `utc` e `timezone` e o locale `pt-br`. Não importe direto de `"dayjs"` nem use `Date`/`Intl.DateTimeFormat` para isso: o `Date` só aparece na fronteira com o Prisma (`.toDate()`).
 
 Todo texto de interface, mensagem de erro e comentário é em **português**. URLs e nomes de código são em **inglês**.
 
