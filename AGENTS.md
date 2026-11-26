@@ -73,7 +73,7 @@ shared/
     layouts/<nome>/index.tsx   layouts (shell do dashboard, auth, landing...)
     ui/                        componentes base (Button, Input, Select, Dialog, Skeleton...)
   constants/                   constantes globais (planos, slots, slugs reservados)
-  data-access/<contexto>/      DAL transversal (session, establishment, subscription)
+  data-access/<contexto>/      DAL transversal (session, establishment, subscription, booking)
   guards/<contexto>/           guards de sessão e acesso
   hooks/                       hooks de client que ligam um form a uma action de `shared/actions`
   lib/<nome>/index.ts          clientes e configuração (auth, prisma, env...)

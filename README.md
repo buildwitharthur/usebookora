@@ -90,7 +90,7 @@ Cada módulo separa o código por papel:
 | -------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `components/ui`      | componentes base: botão, campo, dialog, menu, skeleton...                                                  |
 | `components/layouts` | layouts das áreas: dashboard, auth, landing, onboarding, booking                                           |
-| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano                                            |
+| `data-access`        | leituras usadas em várias telas: sessão, estabelecimento, plano, agendamentos                              |
 | `guards`             | proteção de acesso: exige login, exige estabelecimento...                                                  |
 | `hooks`              | ligação entre forms e as actions de `shared/actions`                                                       |
 | `actions`            | ações usadas em vários lugares (ex.: sair)                                                                 |

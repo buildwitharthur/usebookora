@@ -11,7 +11,7 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { TIME_ZONE_OPTIONS } from "../../constants/time-zone-options";
 import type { EstablishmentSettings } from "../../data-access/get-establishment-settings";
 import { useEstablishmentForm } from "../../hooks/use-establishment-form";
-import { formatPhone } from "../../utils/format-phone";
+import { formatPhone } from "@/shared/utils/format-phone";
 import BrandColorField from "./brand-color-field";
 import SettingsSection from "./settings-section";
 

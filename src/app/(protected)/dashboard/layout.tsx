@@ -1,6 +1,7 @@
 import React from "react";
 
 import ShellLayout from "@/shared/components/layouts/shell";
+import { getBookingsCount } from "@/shared/data-access/booking/get-bookings-count";
 import { getCurrentPlan } from "@/shared/data-access/subscription/get-current-plan";
 import { getEstablishmentOrRedirect } from "@/shared/guards/establishment/get-establishment-or-redirect";
 import { getSessionOrRedirect } from "@/shared/guards/session/get-session-or-redirect";
@@ -22,9 +23,8 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     image: sessionUser.image ?? null,
   };
 
-  // TODO: quando o model de agendamento existir, contar todos os do estabelecimento
-  // (o limite do Basic é no total, não reinicia por mês)
-  const bookingsCount = 0;
+  // Depois do guard: sem estabelecimento ele já redirecionou, e a contagem lançaria erro
+  const bookingsCount = await getBookingsCount();
 
   return (
     <ShellLayout
