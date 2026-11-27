@@ -12,6 +12,16 @@
 
 ---
 
+## Apresentação
+
+<p align="center">
+  <img src="public/bookora.gif" alt="Apresentação do Bookora: página pública, escolha do horário, agenda e planos" width="100%" />
+</p>
+
+<p align="center">
+  <a href="public/bookora.mp4">Assistir em MP4</a>
+</p>
+
 ## Sobre
 
 O **Bookora** é um app de agendamentos para salões, barbearias, clínicas e profissionais autônomos. Cada estabelecimento ganha uma página pública compartilhável, onde o cliente escolhe um serviço e um horário sem precisar criar conta. O dono acompanha tudo em um dashboard.
@@ -25,6 +35,82 @@ O **Bookora** é um app de agendamentos para salões, barbearias, clínicas e pr
 
 🔗 **https://usebookora.com.br**
 
+## Como rodar
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org) 20.9 ou mais novo
+- [pnpm](https://pnpm.io): rode `corepack enable` para usar a versão definida no `package.json`
+- [Docker](https://www.docker.com), para o Postgres local
+- [Stripe CLI](https://docs.stripe.com/stripe-cli), para receber os webhooks da assinatura em dev
+- Contas no [Resend](https://resend.com) (e-mail do login) e no [Stripe](https://stripe.com) (modo Test). O login com Google é opcional e precisa de um OAuth Client no Google Cloud.
+
+### Passo a passo
+
+1. Instale as dependências:
+
+   ```sh
+   pnpm install
+   ```
+
+2. Crie o `.env` a partir do exemplo e preencha as variáveis (cada uma tem um comentário explicando de onde vem):
+
+   ```sh
+   cp .env.example .env
+   ```
+
+   Em desenvolvimento:
+   - `DATABASE_URL=postgresql://bookora:bookora@localhost:5432/bookora` (o banco do `compose.yml`);
+   - `NEXT_PUBLIC_APP_URL=http://localhost:3000`;
+   - `EMAIL_FROM` vazio usa o remetente de teste do Resend, que só entrega para o e-mail da sua conta Resend.
+
+3. Suba o Postgres:
+
+   ```sh
+   docker compose up -d
+   ```
+
+4. Aplique as migrations (isso também gera o cliente do Prisma em `src/generated`):
+
+   ```sh
+   pnpm exec prisma migrate dev
+   ```
+
+5. Em outro terminal, encaminhe os webhooks do Stripe para o app. O comando mostra um `whsec_...`: copie para `STRIPE_WEBHOOK_SECRET` no `.env`.
+
+   ```sh
+   stripe login        # só na primeira vez
+   pnpm stripe:listen
+   ```
+
+6. Rode o app e abra http://localhost:3000:
+
+   ```sh
+   pnpm dev
+   ```
+
+### Scripts
+
+| Comando              | O que faz                                                 |
+| -------------------- | --------------------------------------------------------- |
+| `pnpm dev`           | servidor de desenvolvimento                               |
+| `pnpm build`         | gera o cliente do Prisma e o build de produção            |
+| `pnpm start`         | sobe o build de produção                                  |
+| `pnpm lint`          | ESLint                                                    |
+| `pnpm format`        | formata com o Prettier (`pnpm format:check` só confere)   |
+| `pnpm stripe:listen` | encaminha os eventos do Stripe para `/api/stripe/webhook` |
+
+Antes de subir uma mudança, rode `pnpm exec tsc --noEmit`, `pnpm lint` e `pnpm format:check`.
+
+### Produção
+
+O deploy é no Coolify, com o build pack padrão (Nixpacks):
+
+- **Build:** `pnpm build`
+- **Start:** `pnpm exec prisma migrate deploy && pnpm start`, que aplica as migrations pendentes antes de subir
+- **Variáveis:** as mesmas do `.env.example`, com os valores de produção. Marque `DATABASE_URL` e `NEXT_PUBLIC_APP_URL` como disponíveis no build.
+- **Webhook do Stripe:** endpoint `https://usebookora.com.br/api/stripe/webhook` no Dashboard do Stripe, com os eventos `checkout.session.completed` e `customer.subscription.created`, `.updated` e `.deleted`. O `whsec_` desse endpoint vai em `STRIPE_WEBHOOK_SECRET`.
+
 ## Estrutura do projeto
 
 Um resumo de onde fica cada coisa. Os padrões de código (como escrever uma página, uma action, um hook) estão no [`AGENTS.md`](AGENTS.md).
@@ -33,7 +119,7 @@ Um resumo de onde fica cada coisa. Os padrões de código (como escrever uma pá
 usebookora/
   specs/            documentação do produto (visão geral e tokens de design)
   prisma/           schema e migrations do banco
-  public/           arquivos estáticos (ícones, imagens da marca)
+  public/           arquivos estáticos (ícones, imagens da marca, vídeo de apresentação)
   src/
     app/            rotas do Next.js: só páginas, layouts e metadata
     features/       o código de cada tela, por área e módulo
