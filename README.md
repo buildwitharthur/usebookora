@@ -95,7 +95,7 @@ O **Bookora** é um app de agendamentos para salões, barbearias, clínicas e pr
 | -------------------- | --------------------------------------------------------- |
 | `pnpm dev`           | servidor de desenvolvimento                               |
 | `pnpm build`         | gera o cliente do Prisma e o build de produção            |
-| `pnpm start`         | sobe o build de produção                                  |
+| `pnpm start`         | aplica as migrations pendentes e sobe o build de produção |
 | `pnpm lint`          | ESLint                                                    |
 | `pnpm format`        | formata com o Prettier (`pnpm format:check` só confere)   |
 | `pnpm stripe:listen` | encaminha os eventos do Stripe para `/api/stripe/webhook` |
@@ -107,7 +107,7 @@ Antes de subir uma mudança, rode `pnpm exec tsc --noEmit`, `pnpm lint` e `pnpm 
 O deploy é no Coolify, com o build pack padrão (Nixpacks):
 
 - **Build:** `pnpm build`
-- **Start:** `pnpm exec prisma migrate deploy && pnpm start`, que aplica as migrations pendentes antes de subir
+- **Start:** `pnpm start`, que já aplica as migrations pendentes antes de subir
 - **Variáveis:** as mesmas do `.env.example`, com os valores de produção. Marque `DATABASE_URL` e `NEXT_PUBLIC_APP_URL` como disponíveis no build.
 - **Webhook do Stripe:** endpoint `https://usebookora.com.br/api/stripe/webhook` no Dashboard do Stripe, com os eventos `checkout.session.completed` e `customer.subscription.created`, `.updated` e `.deleted`. O `whsec_` desse endpoint vai em `STRIPE_WEBHOOK_SECRET`.
 
@@ -119,7 +119,7 @@ Um resumo de onde fica cada coisa. Os padrões de código (como escrever uma pá
 usebookora/
   specs/            documentação do produto (visão geral e tokens de design)
   prisma/           schema e migrations do banco
-  public/           arquivos estáticos (ícones, imagens da marca, vídeo de apresentação)
+  public/           arquivos estáticos (ícones, marca, imagem de compartilhamento, vídeo de apresentação)
   src/
     app/            rotas do Next.js: só páginas, layouts e metadata
     features/       o código de cada tela, por área e módulo
@@ -156,6 +156,7 @@ Uma pasta por área, e dentro dela uma pasta por módulo (tela ou conjunto de te
 | `booking`    | `public-page`, `schedule`          |
 | `onboarding` | `home`, `establishment`            |
 | `dashboard`  | `agenda`, `services`, `settings`   |
+| `errors`     | `not-found`, `error`               |
 
 Cada módulo separa o código por papel:
 

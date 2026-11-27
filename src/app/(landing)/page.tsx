@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomePage from "@/features/landing/home/components/pages";
+import { OG_IMAGE } from "@/shared/constants/og-image";
 
 const title =
   "Sistema de agendamento online para salão, barbearia e clínica | Bookora";
@@ -10,8 +11,13 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/" },
-  openGraph: { title, description, url: "/" },
-  twitter: { title, description },
+  openGraph: { title, description, url: "/", images: [OG_IMAGE] },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [OG_IMAGE],
+  },
 };
 
 export default HomePage;

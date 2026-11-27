@@ -239,6 +239,20 @@
     }
   }
 
+  /* Folha arrancada da página 404: cai do calendário uma vez ao entrar (usar com motion-safe:) */
+  --animate-page-fall: page-fall 720ms var(--ease-standard) 200ms both;
+
+  @keyframes page-fall {
+    from {
+      opacity: 0;
+      transform: translate(-28px, -22px) rotate(-14deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   @keyframes spin {
     to {
       transform: rotate(360deg);

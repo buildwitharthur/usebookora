@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { OG_IMAGE } from "@/shared/constants/og-image";
 import "@/shared/styles/globals.css";
 
 const inter = Inter({
@@ -61,20 +62,13 @@ export const metadata: Metadata = {
     siteName,
     title: `${siteName} — Agendamentos simples para o seu negócio`,
     description,
-    images: [
-      {
-        url: "/brand/icon-512.png",
-        width: 512,
-        height: 512,
-        alt: siteName,
-      },
-    ],
+    images: [OG_IMAGE],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${siteName} — Agendamentos simples para o seu negócio`,
     description,
-    images: ["/brand/icon-512.png"],
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,

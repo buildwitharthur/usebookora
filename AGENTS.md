@@ -165,6 +165,10 @@ export const generateMetadata = async ({
 
 - Busque em paralelo o que não depende entre si (`Promise.all`).
 
+### `not-found.tsx` e `error.tsx`
+
+Ficam só na raiz de `src/app` e cobrem todas as rotas. Seguem a regra do `page.tsx`: apontam para a tela em `src/features/errors/` (`not-found` e `error`). O `error.tsx` repete o `"use client"`, porque o Next exige que o arquivo seja client, e a tela recebe só o `retry` do Next. Não crie outros por grupo sem pedido.
+
 ### Navegação do dashboard
 
 Toda página do dashboard tem uma entrada em `src/shared/components/layouts/shell/nav-items.ts`. Essa lista é a fonte única da navegação: alimenta a sidebar e o título da topbar. A página **não** renderiza um `<h1>` próprio, o título vem da topbar.

@@ -77,3 +77,10 @@ O **Bookora** é um app simples de agendamentos para pequenos estabelecimentos (
 | `/dashboard/settings` | Conta   | Configurações                            |
 
 O slug é único e não pode coincidir com rotas do sistema (`api`, `dashboard`, `login`, `onboarding`).
+
+## Páginas de erro
+
+Valem para todas as rotas e ocupam a tela inteira.
+
+- **Página não encontrada:** endereço que não existe, inclusive o slug antigo de um estabelecimento que trocou de link. Oferece voltar para o início.
+- **Erro inesperado:** mensagem genérica, sem expor o motivo da falha. Oferece tentar de novo ou voltar para o início.
