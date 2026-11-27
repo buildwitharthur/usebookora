@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { OG_IMAGE } from "@/shared/constants/og-image";
 import "@/shared/styles/globals.css";
 
-const inter = Inter({
+// Fontes servidas de public/fonts, sem depender do Google no build nem no navegador.
+// São as versões variáveis com o recorte latino (cobre todo o português)
+const inter = localFont({
+  src: "../../public/fonts/inter-latin.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-inter",
-  subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const jetbrainsMono = localFont({
+  src: "../../public/fonts/jetbrains-mono-latin.woff2",
+  weight: "100 800",
+  style: "normal",
   variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
   display: "swap",
 });
 

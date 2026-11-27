@@ -119,7 +119,7 @@ Um resumo de onde fica cada coisa. Os padrões de código (como escrever uma pá
 usebookora/
   specs/            documentação do produto (visão geral e tokens de design)
   prisma/           schema e migrations do banco
-  public/           arquivos estáticos (ícones, marca, imagem de compartilhamento, vídeo de apresentação)
+  public/           arquivos estáticos (ícones, marca, fontes, imagem de compartilhamento, vídeo de apresentação)
   src/
     app/            rotas do Next.js: só páginas, layouts e metadata
     features/       o código de cada tela, por área e módulo

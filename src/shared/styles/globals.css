@@ -266,7 +266,7 @@
   }
 }
 
-/* Fontes carregadas via next/font no layout */
+/* Fontes de public/fonts, carregadas via next/font/local no layout */
 @theme inline {
   --font-*: initial;
   --font-sans:
